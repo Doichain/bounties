@@ -1,0 +1,40 @@
+<head>
+  <title>doichain-bounty</title>
+</head>
+
+<body>
+{{> loginButtons}}
+  <h1>Welcome to Doichain bounties!</h1>
+  {{> reactiveTable collection=bounties fields=fields rowsPerPage=50}}
+
+{{#if isInRole 'admin'}}<input type="button" value="SyncWithGithUb" class="gitHubSync">{{/if}}
+</body>
+
+<template name="bountyEur">
+    {{#if isInRole 'admin'}}
+        <input type="text" value="{{bountyEur}}" class="bountyEur">
+    {{else}}
+        {{bountyEur}}
+    {{/if}}
+</template>
+
+<template name="bountyDoi">
+{{#if isInRole 'admin'}}
+    € <input type="text" value="{{bountyDoi}}" class="bountyDoi">
+{{else}}
+    {{bountyDoi}}
+{{/if}}
+</template>
+
+<template name="priority">
+{{#if isInRole 'admin'}}
+    <select class="priority">
+        {{#each priorityEements}}
+            <option {{prioritySelected this ../priority}}>{{this}}</option>
+        {{/each}}
+    </select>
+{{else}}
+    {{priority}}
+{{/if}}
+</template>
+
