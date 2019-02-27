@@ -5,11 +5,11 @@
 ### TODOs
 - add doichain ci design to template / css
 - improve style of table
-- build and deploy as bundle on explorer.doichain.org / package as docker image
 
 #### Todos bounty hunter
-- order bounties
+- claim bounty, send email to admin / bounty hunter
 - claim bounty - login / create account
+- unclaim bounty as admin / bounty hunter
 
 #### Todos bounty admin
 - remove bounty / or disable it from local database if bounty-tag is removed from github
@@ -18,15 +18,29 @@
 The server reads from the MAIL_URL environment variable to determine how to send mail. The MAIL_URL should reference an SMTP server and use the form smtp://USERNAME:PASSWORD@HOST:PORT or smtps://USERNAME:PASSWORD@HOST:PORT
 
 ### DEPLOYMENT
-- meteorhacks/meteord
-    - docker build -t doichainbounty/app .
-    - https://hub.docker.com/r/meteorhacks/meteord
+- via docker: https://hub.docker.com/r/abernix/meteord#tag-variations
+-  abernix/meteord:node-8-base
+    - docker build -t doichain/bounties .
+    - https://hub.docker.com/r/abernix/meteord
     - docker run -d \
-        -e ROOT_URL=http://bounty.doichain.org \
-        -e MONGO_URL=mongodb://localhost \
-        -e MONGO_OPLOG_URL=mongodb://localhost \
-        -p 3002:80 \
-        yourname/app
+          -e ROOT_URL=https://bounties.doichain.org \
+          -e MONGO_URL=mongodb://x:y@IP:27017/bounties \
+          -e MAIL_URL=smtps://emailuser:emailpw@emailserver:465 \
+          -p 3003:80 \
+          --name doichain_bounties \
+          doichain/bounties
+          
+    - docker run -d \
+          -e ROOT_URL=https://bounties.doichain.org \
+          -e MONGO_URL=mongodb://x:y@IP:27017/bounties \
+          -e MAIL_URL=smtps://emailuser:emailpw@emailserver:465 \
+          -p 3003:80 \
+           --name doichain_bounties \
+          -v /usr/src/bounties/bundle:/bundle \
+          --name doichain_bounties \
+          abernix/meteord:node-8-base
+          
+          -e MONGO_OPLOG_URL=mongodb://oplog_url \ 
 
 ### Links and useful information
 - Blaze/SpacebarsJS
@@ -43,6 +57,7 @@ The server reads from the MAIL_URL environment variable to determine how to send
 ### Deployment
 
 ## Done
+- 26-02-2019 build and deploy as bundle on explorer.doichain.org / package as docker image
 - 25-02-2019 link to details of a bounty in Github (new window)
 - 25-02-2019 run github sync every 30mins / or when admin triggers it (whats best?)
 - 25-02-2019 admin can set priority, price in EUR, price in DOI or price in EUR_AND_DOI
