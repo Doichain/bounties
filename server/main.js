@@ -41,7 +41,7 @@ if (Meteor.isServer) {
         },
         'blockBounty'({github_id}){
                 if(Meteor.userId()){
-                    const blockedBy = {userId:Meteor.userId(),states:"blocked",email:Meteor.user().emails[0].address}
+                    const blockedBy = {userId:Meteor.userId(),state:"blocked",email:Meteor.user().emails[0].address}
                     Bounties.update({github_id:github_id}, {$addToSet:{blockedBy:blockedBy},$set:{state:'blocked'}});
                     return "Issue:"+github_id+" blocked by "+Meteor.userId();
                 }
@@ -53,7 +53,7 @@ if (Meteor.isServer) {
             const lastUser = bounty.blockedBy[bounty.blockedBy.length-1].userId;
             //user must be authenticated, last block must belong to user (or admin), status must be "blocked"
             if(Meteor.userId() && (Meteor.userId()==lastUser || Roles.userIsInRole( Meteor.user(), ['admin']))){
-                const blockedBy = {userId:Meteor.userId(),states:"cancelled",email:Meteor.user().emails[0].address}
+                const blockedBy = {userId:Meteor.userId(),state:"cancelled",email:Meteor.user().emails[0].address}
                 Bounties.update({github_id:github_id}, {$addToSet:{blockedBy:blockedBy},$set:{state:'cancelled'}});
                 //TODO send Email to Administrator if hunter cancelled if admin cancelled send it to hunter
                 return "Issue:"+github_id+" cancelled by "+Meteor.userId();
@@ -65,7 +65,7 @@ if (Meteor.isServer) {
             const lastUser = bounty.blockedBy[bounty.blockedBy.length-1].userId;
             //user must be authenticated, last block must belong to user (or admin), status must be "blocked"
             if(Meteor.userId() && (Meteor.userId()==lastUser || Roles.userIsInRole( Meteor.user(), ['admin']))){
-                const blockedBy = {userId:Meteor.userId(),states:"under review",email:Meteor.user().emails[0].address}
+                const blockedBy = {userId:Meteor.userId(),state:"under review",email:Meteor.user().emails[0].address}
                 Bounties.update({github_id:github_id}, {$addToSet:{blockedBy:blockedBy},$set:{state:'under review'}});
                 console.log('requested review for:',github_id);
 
@@ -79,7 +79,7 @@ if (Meteor.isServer) {
             if (!Roles.userIsInRole( Meteor.user(), ['admin']) && bounty.state!="under review")
                 return;
 
-            const blockedBy = {userId:Meteor.userId(),states:"approved",email:Meteor.user().emails[0].address}
+            const blockedBy = {userId:Meteor.userId(),state:"approved",email:Meteor.user().emails[0].address}
             Bounties.update({github_id:github_id}, {$addToSet:{blockedBy:blockedBy},$set:{state:'approved'}});
 
             //TODO if approved set github_state to closed (on github too!)

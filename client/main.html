@@ -43,6 +43,7 @@
 
         {{#unless isInRole 'admin'}}
             {{#if blockedBy}}
+                state: {{blockedBy.state}} <br>
                 by: {{blockedBy.by}} <br>
                 until:  {{blockedBy.blockedUntil}}
                 {{#if isState 'cancelled'}}
@@ -61,6 +62,7 @@
 
         {{#if isInRole 'admin'}}
             {{#if blockedBy}}
+                state: {{blockedBy.state}} <br>
                 by: {{blockedBy.by}} <br>
                 until:  {{blockedBy.blockedUntil}}
                 {{#if isState 'cancelled'}}

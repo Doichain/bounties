@@ -112,21 +112,19 @@ Template.blockBounty.helpers({
         const blockedUntil =  blocks[blocks.length-1].blockedUntil; //get blockedUntil for this issue
         const emailaddress = blocks[blocks.length-1].email;
         const state = blocks[blocks.length-1].state;
-        return {by:emailaddress, state:state, blockedUntil:moment(blockedUntil).format('LLLL')}; //return email address and date until its blocked
+        const retObj = {by:emailaddress, state:state, blockedUntil:moment(blockedUntil).format('LLLL')};
+        console.log(retObj);
+        return  retObj;//return email address and date until its blocked
     },
     isState: function (state){
-        console.log(this);
-            console.log(this.state+' '+state);
-            if(this.state===state)return true;
-            else return false;
+        if(this.state===state)return true;
+        else return false;
     },
     isMine: function () {
         const blocks = Bounties.findOne({github_id:this.github_id}).blockedBy;
         if(!blocks || blocks.length==0) return null; //if no block return
 
         const userId = blocks[blocks.length-1].userId; //get last userId of this issue
-        console.log(userId);
-        console.log(Meteor.userId());
         if(userId==Meteor.userId())return true;
         else return false;
     }
