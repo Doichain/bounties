@@ -6,13 +6,11 @@
 - add doichain ci design to template / css
 - improve style of table
 
-
-#### Todos bounty hunter
-- claim bounty
+### Todos bounty hunter
 - send emails to admin / bounty hunter
 - approve bounty on github (change state to closed)
 
-#### Todos bounty admin
+### Todos bounty admin
 - remove bounty / or disable it from local database if bounty-tag is removed from github
 
 ### Environment variables
