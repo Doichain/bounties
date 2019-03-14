@@ -38,3 +38,44 @@
 {{/if}}
 </template>
 
+<template name="blockBounty">
+    {{#if currentUser }}
+
+        {{#unless isInRole 'admin'}}
+            {{#if blockedBy}}
+                by: {{blockedBy.by}} <br>
+                until:  {{blockedBy.blockedUntil}}
+                {{#if isState 'cancelled'}}
+                    <input type="button" value="Block" class="blockBounty">
+                {{/if}}
+                {{#if isState 'blocked'}}
+                    {{#if isMine}}
+                        <input type="button" value="Cancel" class="cancelBounty">
+                        <input type="button" value="Request Approval" class="requestApproval">
+                    {{/if}}
+                {{/if}}
+            {{else}}
+                <input type="button" value="Block" class="blockBounty">
+            {{/if}}
+        {{/unless}}
+
+        {{#if isInRole 'admin'}}
+            {{#if blockedBy}}
+                by: {{blockedBy.by}} <br>
+                until:  {{blockedBy.blockedUntil}}
+                {{#if isState 'cancelled'}}
+                    <input type="button" value="Block" class="blockBounty">
+                {{/if}}
+                {{#if isState 'blocked'}}
+                    <input type="button" value="Cancel" class="cancelBounty">
+                {{/if}}
+                {{#if isState 'under review'}}
+                    <input type="button" value="Approve" class="approveBounty">
+                {{/if}}
+            {{else}}
+                <input type="button" value="Block" class="blockBounty">
+            {{/if}}
+        {{/if}}
+    {{/if}}
+</template>
+

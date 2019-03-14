@@ -79,6 +79,9 @@ reactive-var@1.0.11
 reload@1.2.0
 retry@1.1.0
 routepolicy@1.1.0
+rzymek:moment-locale-de@2.9.0
+rzymek:moment-locale-es@2.9.0
+rzymek:moment-locale-ru@2.9.0
 service-configuration@1.0.11
 session@1.2.0
 sha@1.0.9

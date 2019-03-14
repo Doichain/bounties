@@ -27,3 +27,6 @@ accounts-ui
 underscore
 momentjs:moment
 alanning:roles
+rzymek:moment-locale-de
+rzymek:moment-locale-es
+rzymek:moment-locale-ru

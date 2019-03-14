@@ -24,7 +24,7 @@ export function listForRepo(){
                 updated_at: element.updated_at,
                 title: element.title,
                 labels: _.map(element.labels, function(this_element){ return _.pick(this_element, 'name', 'color'); }),
-                state: element.state,
+                github_state: element.state,
                 body: element.body,
                 html_url: element.html_url
             }

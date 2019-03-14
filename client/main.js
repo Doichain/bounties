@@ -2,6 +2,9 @@ import { Template } from 'meteor/templating';
 import Bounties from '../imports/collections.js'
 import './main.html';
 
+const locale = navigator.language || navigator.userLanguage;  //window.navigator.language;
+moment.locale(locale.substring(0,2));
+
 Template.body.onCreated(function bodyOnCreated() {
     const handle = Meteor.subscribe('bounties');
     Tracker.autorun(() => {
@@ -42,6 +45,33 @@ Template.priority.events({
     }
 });
 
+Template.blockBounty.events({
+    'click .blockBounty'(event){
+        Meteor.call('blockBounty', {github_id: this.github_id}, (err, res) => {
+            console.log(res);
+            err?alert(err):'';
+        });
+    },
+    'click .cancelBounty'(event){
+        Meteor.call('cancelBounty', {github_id: this.github_id}, (err, res) => {
+            console.log(res);
+            err?alert(err):'';
+        });
+    },
+    'click .requestApproval'(event){
+        Meteor.call('requestApproval', {github_id: this.github_id}, (err, res) => {
+            console.log(res);
+            err?alert(err):'';
+        });
+    },
+    'click .approveBounty'(event){
+        Meteor.call('approveBounty', {github_id: this.github_id}, (err, res) => {
+            console.log(res);
+            err?alert(err):'';
+        });
+    }
+});
+
 Template.body.helpers({
   bounties: function () {
     return Bounties.find({}, {sort: {priority: -1}});
@@ -59,16 +89,46 @@ Template.body.helpers({
             {fieldId: 'bountyEur', key: 'bountyEU', label: 'bounty €', tmpl: Template.bountyEur},
             {fieldId: 'bountyDoi', key: 'bountyEU', label: 'bounty DOI', tmpl: Template.bountyDoi},
             {fieldId: 'priority', key: 'priority', label: 'Priority', sortOrder: 0, sortDirection: 'descending', tmpl: Template.priority},
+            {fieldId: 'blockBounty', key: 'blockedBy', label: 'blocked by', tmpl: Template.blockBounty},
     ];
   }
 });
 
 Template.priority.helpers({
     prioritySelected: function (key, value) {
-       // console.log('key:'+key+' value:'+value);
         return key == value ? 'selected' : '';
     },
     priorityEements: function(){
         return ['0','1','2','3'];
     }
+});
+
+Template.blockBounty.helpers({
+    blockedBy: function (){
+        //find the last blockedBy of this issue
+        const blocks = Bounties.findOne({github_id:this.github_id}).blockedBy;
+        if(!blocks || blocks.length==0) return null; //if no block return
+
+        const blockedUntil =  blocks[blocks.length-1].blockedUntil; //get blockedUntil for this issue
+        const emailaddress = blocks[blocks.length-1].email;
+        const state = blocks[blocks.length-1].state;
+        return {by:emailaddress, state:state, blockedUntil:moment(blockedUntil).format('LLLL')}; //return email address and date until its blocked
+    },
+    isState: function (state){
+        console.log(this);
+            console.log(this.state+' '+state);
+            if(this.state===state)return true;
+            else return false;
+    },
+    isMine: function () {
+        const blocks = Bounties.findOne({github_id:this.github_id}).blockedBy;
+        if(!blocks || blocks.length==0) return null; //if no block return
+
+        const userId = blocks[blocks.length-1].userId; //get last userId of this issue
+        console.log(userId);
+        console.log(Meteor.userId());
+        if(userId==Meteor.userId())return true;
+        else return false;
+    }
+
 });

@@ -6,10 +6,11 @@
 - add doichain ci design to template / css
 - improve style of table
 
+
 #### Todos bounty hunter
-- claim bounty, send email to admin / bounty hunter
-- claim bounty - login / create account
-- unclaim bounty as admin / bounty hunter
+- claim bounty
+- send emails to admin / bounty hunter
+- approve bounty on github (change state to closed)
 
 #### Todos bounty admin
 - remove bounty / or disable it from local database if bounty-tag is removed from github
@@ -57,13 +58,21 @@ The server reads from the MAIL_URL environment variable to determine how to send
 ### Deployment
 
 ## Done
+- 14-03-2019 - login / create account / roles (hunter, admin)
+- 14-03-2019 - block bounty, cancel bounty
+- 14-03-2019 - unblock bounty as admin / bounty hunter
+- 14-03-2019 add blockTime as field 
+
 - 26-02-2019 build and deploy as bundle on explorer.doichain.org / package as docker image
 - 25-02-2019 link to details of a bounty in Github (new window)
 - 25-02-2019 run github sync every 30mins / or when admin triggers it (whats best?)
 - 25-02-2019 admin can set priority, price in EUR, price in DOI or price in EUR_AND_DOI
+
 - 24-02-2019 on startup, if no admin is in database add admin user with role admin
+
 - 23-02-2019 add accounts package  https://docs.meteor.com/api/accounts.html
 - 23-02-2019 add roles package https://atmospherejs.com/alanning/roles
+
 - 22-02-2019 set email url of email module https://docs.meteor.com/api/email.html
 - 22-02-2019 configure accounts-ui https://docs.meteor.com/packages/accounts-ui.html
 - 22-02-2019 configure account-password settings
