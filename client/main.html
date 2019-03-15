@@ -3,7 +3,7 @@
 </head>
 
 <body>
-{{> loginButtons}}
+In order to block a bounty you must be logged in please sign-in/login here: {{> loginButtons}}
   <h1>Welcome to Doichain bounties!</h1>
   {{> reactiveTable collection=bounties fields=fields rowsPerPage=50}}
 
@@ -73,6 +73,7 @@
                 {{/if}}
                 {{#if isState 'under review'}}
                     <input type="button" value="Approve" class="approveBounty">
+                    <input type="button" value="Cancel" class="cancelBounty">
                 {{/if}}
             {{else}}
                 <input type="button" value="Block" class="blockBounty">

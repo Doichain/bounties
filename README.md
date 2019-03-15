@@ -29,6 +29,7 @@ The server reads from the MAIL_URL environment variable to determine how to send
           --name doichain_bounties \
           doichain/bounties
           
+    - meteor build --architecture=os.linux.x86_64 ./     
     - docker run -d \
           -e ROOT_URL=https://bounties.doichain.org \
           -e MONGO_URL=mongodb://x:y@IP:27017/bounties \

@@ -113,7 +113,6 @@ Template.blockBounty.helpers({
         const emailaddress = blocks[blocks.length-1].email;
         const state = blocks[blocks.length-1].state;
         const retObj = {by:emailaddress, state:state, blockedUntil:moment(blockedUntil).format('LLLL')};
-        console.log(retObj);
         return  retObj;//return email address and date until its blocked
     },
     isState: function (state){
