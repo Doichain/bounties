@@ -48,8 +48,8 @@ if (Meteor.isServer) {
                 //TODO send email to admin who blocked the issue
         },
         'cancelBounty'({github_id}){
+            console.log('cancel bounty',github_id);
             const bounty = Bounties.findOne({github_id:github_id}); //find the bounty we are working on
-            if (bounty.state!="blocked" || ( Roles.userIsInRole( Meteor.user(), ['admin']) && bounty.state!='under review')) return;
             const lastUser = bounty.blockedBy[bounty.blockedBy.length-1].userId;
             //user must be authenticated, last block must belong to user (or admin), status must be "blocked"
             if(Meteor.userId() && (Meteor.userId()==lastUser || Roles.userIsInRole( Meteor.user(), ['admin']))){
