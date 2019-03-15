@@ -29,7 +29,7 @@ The server reads from the MAIL_URL environment variable to determine how to send
           --name doichain_bounties \
           doichain/bounties
           
-    - meteor build --architecture=os.linux.x86_64 ./     
+    - meteor build --architecture=os.linux.x86_64 ../bundle/     
     - docker run -d \
           -e ROOT_URL=https://bounties.doichain.org \
           -e MONGO_URL=mongodb://x:y@IP:27017/bounties \
@@ -39,8 +39,9 @@ The server reads from the MAIL_URL environment variable to determine how to send
           -v /usr/src/bounties/bundle:/bundle \
           --name doichain_bounties \
           abernix/meteord:node-8-base
+     - for upgrades please repeat ``meteor build --architecture=os.linux.x86_64 ../bundle/`` followed by a ````docker stop doichain_bounties; docker start doichain_bounties```
           
-          -e MONGO_OPLOG_URL=mongodb://oplog_url \ 
+          -e MONGO_OPLOG_URL=mongodb://oplog_url \
 
 ### Links and useful information
 - Blaze/SpacebarsJS
