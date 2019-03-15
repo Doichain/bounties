@@ -5,6 +5,7 @@
 ### TODOs
 - add doichain ci design to template / css
 - improve style of table
+- clicking on a bounty should lead to see the bounty text in detail and provide an url to it.
 
 ### Todos bounty hunter
 - send emails to admin / bounty hunter
