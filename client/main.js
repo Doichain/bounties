@@ -103,7 +103,7 @@ Template.body.helpers({
             {fieldId: 'created_at',key: 'created_at',label: 'created',fn: function (value) { return  moment(value).fromNow();}},
             {fieldId: 'updated_at',key: 'updated_at',label: 'updated',fn: function (value) { return  moment(value).fromNow();}},
             {fieldId: 'state',key: 'state',label: 'State'},
-            {fieldId: 'labelsId',key: 'labels',label: 'Labels',fn: function (value) { return _.pluck(value, 'name');}},
+            {fieldId: 'labelsId',key: 'labels',label: 'Labels',tmpl: Template.labels},
             {fieldId: 'bountyEur', key: 'bountyEU', label: 'bounty €', tmpl: Template.bountyEur},
             {fieldId: 'bountyDoi', key: 'bountyEU', label: 'bounty DOI', tmpl: Template.bountyDoi},
             {fieldId: 'priority', key: 'priority', label: 'Priority', sortOrder: 0, sortDirection: 'descending', tmpl: Template.priority},

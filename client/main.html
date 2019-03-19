@@ -10,6 +10,13 @@ In order to block a Doichain bounty, you must be logged in please {{> loginButto
 {{#if isInRole 'admin'}}<input type="button" value="SyncWithGithUb" class="gitHubSync">{{/if}}
 </body>
 
+
+<template name="labels">
+    {{#each labels}}
+        <span class="badge badge-pill" style="background-color:#{{this.color}}">{{this.name}}</span>
+    {{/each}}
+</template>
+
 <template name="bountyEur">
     {{#if isInRole 'admin'}}
         <input type="text" value="{{bountyEur}}" class="bountyEur">
