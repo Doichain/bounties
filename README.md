@@ -1,18 +1,16 @@
 # Bounty manager
 
-## Connects to a Github profile reads out issues with a certain label and provides for the admin a possibility to add a bounty. Other users can claim the bounty by providing a delivery date.
+## Connects to a Github profile reads out issues with a certain label and provides and admin frontend to add and configure the imported bounties. Users (bounty hunters) can block a bounty until the blocked date.
 
 ### TODOs
-- add doichain ci design to template / css
-- improve style of table
-- clicking on a bounty should lead to see the bounty text in detail and provide an url to it.
-
-### Todos bounty hunter
+- allowing the admin to put a longer/shorter time frame to block an issue
+- resize window.frame (if available) dynamically depending on the size of the underlying table (js)
 - send emails to admin / bounty hunter
 - approve bounty on github (change state to closed)
-
-### Todos bounty admin
 - remove bounty / or disable it from local database if bounty-tag is removed from github
+- add doichain ci design to template / css
+- improve style of table
+
 
 ### Environment variables
 The server reads from the MAIL_URL environment variable to determine how to send mail. The MAIL_URL should reference an SMTP server and use the form smtp://USERNAME:PASSWORD@HOST:PORT or smtps://USERNAME:PASSWORD@HOST:PORT
@@ -59,6 +57,7 @@ The server reads from the MAIL_URL environment variable to determine how to send
 ### Deployment
 
 ## Done
+- 19-03-2019 - configure an URL on wordpress which gives it through to the call of the iframe to call a specific bounty
 - 14-03-2019 - login / create account / roles (hunter, admin)
 - 14-03-2019 - block bounty, cancel bounty
 - 14-03-2019 - unblock bounty as admin / bounty hunter

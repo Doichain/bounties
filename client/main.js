@@ -2,20 +2,34 @@ import { Template } from 'meteor/templating';
 import Bounties from '../imports/collections.js'
 import './main.html';
 
-const locale = navigator.language || navigator.userLanguage;  //window.navigator.language;
+const locale = navigator.language || navigator.userLanguage;
 moment.locale(locale.substring(0,2));
+let id_filter;
 
-Template.body.onCreated(function bodyOnCreated() {
-    const handle = Meteor.subscribe('bounties');
-    Tracker.autorun(() => {
-        const isReady = handle.ready();
-        //console.log(`Handle is ${isReady ? 'ready' : 'not ready'}`);
-    });
+FlowRouter.route('/:_id', {
+    name: 'Bounties.show',
+    action(params, queryParams) {
+        id_filter = params._id;
+        const handle = Meteor.subscribe('bounties', id_filter);
+        Tracker.autorun(() => {
+            const isReady = handle.ready();
+        });
+    }
+});
+
+
+FlowRouter.route('/', {
+    name: 'Bounties.list',
+    action(params, queryParams) {
+        const handle = Meteor.subscribe('bounties');
+        Tracker.autorun(() => {
+            const isReady = handle.ready();
+        });
+    }
 });
 
 Template.body.events({
     'click .gitHubSync'(event) {
-        console.log('calling gitHubSync');
         Meteor.call('gitHubSync', (err, res) => {
             err?alert(err):'';
         });
@@ -74,7 +88,11 @@ Template.blockBounty.events({
 
 Template.body.helpers({
   bounties: function () {
-    return Bounties.find({}, {sort: {priority: -1}});
+
+    let filter = {};
+    if(id_filter) filter = {github_id: filter};
+    const bounties = Bounties.find({}, {sort: {priority: -1}});
+    return bounties;
   },
   fields: function () {
     // {fieldId: 'githubId',key: 'github_id',label: 'GitHubId'},

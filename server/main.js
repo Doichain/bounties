@@ -17,10 +17,16 @@ Meteor.startup(() => {
 });
 
 if (Meteor.isServer) {
-    Meteor.publish('bounties', function bountiesPublication() {
-        return Bounties.find({}, {sort: {priority: -1}});
-    });
 
+    Meteor.publish('bounties', function bountiesPublication(filter_id) {
+
+        if(filter_id){
+            return Bounties.find({github_id: Number(filter_id)}, {sort: {priority: -1}});
+        }
+        else
+            return Bounties.find({}, {sort: {priority: -1}});
+
+    });
 
     Meteor.methods({
         'gitHubSync'() {

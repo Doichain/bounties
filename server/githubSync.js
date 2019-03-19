@@ -17,7 +17,7 @@ export function listForRepo(){
         data.forEach(function (element, index) {
 
         Bounties.upsert({
-            github_id: element.id,
+            github_id: element.number,
         }, {
             $set: {
                 created_at: element.created_at,
