@@ -96,10 +96,10 @@ Template.body.helpers({
   },
   fields: function () {
     // {fieldId: 'githubId',key: 'github_id',label: 'GitHubId'},
+      // fn: function (value, object) {
+      //                     return new Spacebars.SafeString("<a href="+object.html_url+" target='_blank'>"+value+"</a>");
       return [
-            {fieldId: 'title',key: 'title',label: 'Title', fn: function (value, object) {
-                    return new Spacebars.SafeString("<a href="+object.html_url+" target='_blank'>"+value+"</a>");
-                }},
+            {fieldId: 'title',key: 'title',label: 'Title', tmpl: Template.bountyMain},
             {fieldId: 'created_at',key: 'created_at',label: 'created',fn: function (value) { return  moment(value).fromNow();}},
             {fieldId: 'updated_at',key: 'updated_at',label: 'updated',fn: function (value) { return  moment(value).fromNow();}},
             {fieldId: 'state',key: 'state',label: 'State'},

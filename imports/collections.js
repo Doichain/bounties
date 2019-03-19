@@ -59,6 +59,11 @@ Bounties.attachSchema(new SimpleSchema({
         type: String,
         label: "Title"
     },
+    body: {
+        type: String,
+        label: "Body",
+        optional: true
+    },
     github_state: {
         type: String,
         label: "GitHub State",

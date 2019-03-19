@@ -10,6 +10,20 @@ In order to block a Doichain bounty, you must be logged in please {{> loginButto
 {{#if isInRole 'admin'}}<input type="button" value="SyncWithGithUb" class="gitHubSync">{{/if}}
 </body>
 
+<template name="bountyMain">
+    <p>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse{{github_id}}" aria-expanded="false" aria-controls="collapse{{github_id}}">
+            {{title}}
+        </button>
+    </p>
+    <div class="collapse" id="collapse{{github_id}}">
+        <div class="card card-body">
+            {{#markdown}}{{body}}{{/markdown}}
+            <br>
+            <a href="{{html_url}}" target='_blank'>Open on GitHub</a>
+        </div>
+    </div>
+</template>
 
 <template name="labels">
     {{#each labels}}
