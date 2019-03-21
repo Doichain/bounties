@@ -57,7 +57,7 @@ The server reads from the MAIL_URL environment variable to determine how to send
 ### Deployment
 
 ## Done
-- 21-03-2019 - only show bounties with higher then 0 DOI / fiat bounty
+- 21-03-2019 - only show bounties with higher then 0 DOI / fiat bounty for normal users
 - 21-03-2019 - make a share button (notepad, twitter,...)
 - 19-03-2019 - added body to table and made it expand when clicked on it
 - 19-03-2019 - made labels look more beautiful

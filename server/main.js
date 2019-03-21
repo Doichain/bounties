@@ -28,7 +28,7 @@ if (Meteor.isServer) {
             if(Roles.userIsInRole( Meteor.user(), ['admin'])){ //display all records
                 return Bounties.find({}, {sort: {priority: -1}});
             }else {
-                const query = { $or: [ { bountyEur: { $gt: 0 } }, { bountyDoi: 0 } ] };
+                const query = { $or: [ { bountyEur: { $gt: 0 } },{ bountyEur: { $gt: 0 }}] };
                 return Bounties.find(query,{sort: {priority: -1}});
             }
         }
