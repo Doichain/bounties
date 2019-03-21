@@ -11,23 +11,25 @@ In order to block a Doichain bounty, you must be logged in please {{> loginButto
 </body>
 
 <template name="bountyMain">
-    <table>
-        <tr>
-            <td>
-                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse{{github_id}}" aria-expanded="false" aria-controls="collapse{{github_id}}">
-                    {{title}}
-                </button>
-            </td>
-            <td>
-                {{>shareit shareData}}
-            </td>
-        </tr>
-    </table>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse{{github_id}}" aria-expanded="false" aria-controls="collapse{{github_id}}">
+        {{title}}
+    </button>
     <div class="collapse" id="collapse{{github_id}}">
         <div class="card card-body">
-            {{#markdown}}{{body}}{{/markdown}}
-            <br>
-            <a href="{{html_url}}" target='_blank'>Open on GitHub</a>
+            <table>
+                <tr>
+                    <td>
+                        <p>{{#markdown}}{{body}}{{/markdown}}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table width="100%"><tr><td><a href="{{html_url}}" target='_blank'>Open on GitHub</a></td><td align="rightgit ">{{>shareit shareData}}</td></tr></table>
+                    </td>
+                </tr>
+            </table>
+
+
         </div>
     </div>
 </template>
