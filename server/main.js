@@ -23,8 +23,16 @@ if (Meteor.isServer) {
         if(filter_id){
             return Bounties.find({github_id: Number(filter_id)}, {sort: {priority: -1}});
         }
-        else
-            return Bounties.find({}, {sort: {priority: -1}});
+        else{
+
+            if(Roles.userIsInRole( Meteor.user(), ['admin'])){ //display all records
+                return Bounties.find({}, {sort: {priority: -1}});
+            }else {
+                const query = { $or: [ { bountyEur: { $gt: 0 } }, { bountyDoi: 0 } ] };
+                return Bounties.find(query,{sort: {priority: -1}});
+            }
+        }
+
 
     });
 

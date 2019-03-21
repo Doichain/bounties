@@ -3,7 +3,6 @@
 ## Connects to a Github profile reads out issues with a certain label and provides and admin frontend to add and configure the imported bounties. Users (bounty hunters) can block a bounty until the blocked date.
 
 ### TODOs
-- only show bounties with higher then 0 DOI / Fiat bounty
 - remove bounty / or disable it from local database if bounty-tag is removed from github
 - allowing the admin to put a longer/shorter time frame to block an issue
 - resize window.frame (if available) dynamically depending on the size of the underlying table (js)
@@ -58,7 +57,8 @@ The server reads from the MAIL_URL environment variable to determine how to send
 ### Deployment
 
 ## Done
-- 19-03-2019 - make a share button (notepad, twitter,...)
+- 21-03-2019 - only show bounties with higher then 0 DOI / fiat bounty
+- 21-03-2019 - make a share button (notepad, twitter,...)
 - 19-03-2019 - added body to table and made it expand when clicked on it
 - 19-03-2019 - made labels look more beautiful
 - 19-03-2019 - configure an URL on wordpress which gives it through to the call of the iframe to call a specific bounty
