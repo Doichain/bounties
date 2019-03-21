@@ -2,6 +2,23 @@ import { Template } from 'meteor/templating';
 import Bounties from '../imports/collections.js'
 import './main.html';
 
+ShareIt.configure({
+    sites: {                // nested object for extra configurations
+        'facebook': null,
+        'twitter': {},
+        'googleplus': null,
+        'pinterest': null
+    },
+    classes: "large btn", // string (default: 'large btn')
+                          // The classes that will be placed on the sharing buttons, bootstrap by default.
+    iconOnly: false,      // boolean (default: false)
+                          // Don't put text on the sharing buttons
+    applyColors: true,     // boolean (default: true)
+    // apply classes to inherit each social networks background color
+    faSize: '',            // font awesome size
+    faClass: ''		  // font awesome classes like square
+});
+
 const locale = navigator.language || navigator.userLanguage;
 moment.locale(locale.substring(0,2));
 let id_filter;
@@ -110,6 +127,13 @@ Template.body.helpers({
             {fieldId: 'blockBounty', key: 'blockedBy', label: 'blocked by', tmpl: Template.blockBounty},
     ];
   }
+});
+
+Template.bountyMain.helpers({
+    shareData: function () {
+        console.log(this);
+        return { title: 'Doichain bounty: '+this.title, url: 'https://www.doichain.org/bounties/'+this.github_id}
+    }
 });
 
 Template.priority.helpers({

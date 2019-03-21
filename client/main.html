@@ -11,11 +11,18 @@ In order to block a Doichain bounty, you must be logged in please {{> loginButto
 </body>
 
 <template name="bountyMain">
-    <p>
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse{{github_id}}" aria-expanded="false" aria-controls="collapse{{github_id}}">
-            {{title}}
-        </button>
-    </p>
+    <table>
+        <tr>
+            <td>
+                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse{{github_id}}" aria-expanded="false" aria-controls="collapse{{github_id}}">
+                    {{title}}
+                </button>
+            </td>
+            <td>
+                {{>shareit shareData}}
+            </td>
+        </tr>
+    </table>
     <div class="collapse" id="collapse{{github_id}}">
         <div class="card card-body">
             {{#markdown}}{{body}}{{/markdown}}
