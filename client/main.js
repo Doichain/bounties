@@ -45,6 +45,10 @@ FlowRouter.route('/', {
     }
 });
 
+Template.bountyMain.onRendered(function() {
+    var clipboard = new Clipboard('.btn-copy-link');
+});
+
 Template.body.events({
     'click .gitHubSync'(event) {
         Meteor.call('gitHubSync', (err, res) => {
@@ -112,9 +116,6 @@ Template.body.helpers({
     return bounties;
   },
   fields: function () {
-    // {fieldId: 'githubId',key: 'github_id',label: 'GitHubId'},
-      // fn: function (value, object) {
-      //                     return new Spacebars.SafeString("<a href="+object.html_url+" target='_blank'>"+value+"</a>");
       return [
             {fieldId: 'title',key: 'title',label: 'Title', tmpl: Template.bountyMain},
             {fieldId: 'created_at',key: 'created_at',label: 'created',fn: function (value) { return  moment(value).fromNow();}},
@@ -131,7 +132,6 @@ Template.body.helpers({
 
 Template.bountyMain.helpers({
     shareData: function () {
-        console.log(this);
         return { title: 'Doichain bounty: '+this.title, url: 'https://www.doichain.org/bounties/'+this.github_id}
     }
 });

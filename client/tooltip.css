@@ -1,0 +1,22 @@
+.tooltip {
+    z-index: 1001;
+    pointer-events: none;
+    transition: opacity .1s ease-out;
+    opacity: 0;
+    position: relative;
+    left: 50px;
+    top: 100px;
+    color: white;
+    background-color: black;
+}
+
+.tooltip.hide {
+    opacity: 0;
+}
+
+.tooltip.show {
+    opacity: 1;
+    position: relative;
+    left: 50px;
+    top: 200px;
+}

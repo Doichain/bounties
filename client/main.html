@@ -1,5 +1,7 @@
 <head>
   <title>doichain-bounty</title>
+    <script src="//cdn.rawgit.com/zenorocha/clipboard.js/master/dist/clipboard.min.js"></script>
+
 </head>
 
 <body>
@@ -8,6 +10,8 @@ In order to block a Doichain bounty, you must be logged in please {{> loginButto
   {{> reactiveTable collection=bounties fields=fields rowsPerPage=50}}
 
 {{#if isInRole 'admin'}}<input type="button" value="SyncWithGithUb" class="gitHubSync">{{/if}}
+
+{{ > tooltips }}
 </body>
 
 <template name="bountyMain">
@@ -16,20 +20,24 @@ In order to block a Doichain bounty, you must be logged in please {{> loginButto
     </button>
     <div class="collapse" id="collapse{{github_id}}">
         <div class="card card-body">
-            <table>
+            <table width="100%">
                 <tr>
-                    <td>
+                    <td width="100%">
                         <p>{{#markdown}}{{body}}{{/markdown}}</p>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <table width="100%"><tr><td><a href="{{html_url}}" target='_blank'>Open on GitHub</a></td><td align="rightgit ">{{>shareit shareData}}</td></tr></table>
+                        <table width="100%"><tr><td>
+                            <a href="{{html_url}}" data-tooltip=" Open GitHub Issue " target='_blank'>
+                                <i class="fa fa-github fa-2x"></i>
+                            </a>
+                        </td>
+                            <td><a href="#" class="btn-copy-link" data-tooltip=" Copy https://www.doichain.org/bounties/{{github_id}} into clipboard "   data-clipboard-text="https://www.doichain.org/bounties/{{github_id}}"><i class="fa fa-clipboard fa-2x" aria-hidden="true"></i></a></td>
+                            <td align="right ">{{>shareit shareData}}</td></tr></table>
                     </td>
                 </tr>
             </table>
-
-
         </div>
     </div>
 </template>

@@ -57,6 +57,9 @@ The server reads from the MAIL_URL environment variable to determine how to send
 ### Deployment
 
 ## Done
+- 23-03-2019 - added tooltips
+- 22-03-2019 - copy bounty url into clipboard - https://wsvincent.com/clipboard-js-for-meteor/
+- 22-03-2019 - font awesome (old version) github icon for link to issue https://fontawesome.com/v4.7.0/icon/github
 - 21-03-2019 - only show bounties with higher then 0 DOI / fiat bounty for normal users
 - 21-03-2019 - make a share button (notepad, twitter,...)
 - 19-03-2019 - added body to table and made it expand when clicked on it
