@@ -3,10 +3,17 @@
 ## Connects to a Github profile reads out issues with a certain label and provides and admin frontend to add and configure the imported bounties. Users (bounty hunters) can block a bounty until the blocked date.
 
 ### TODOs
+- when a bounty is longer blocked then 10 days after "blocked until" don't show it anymore.ае       
 - remove bounty / or disable it from local database if bounty-tag is removed from github
 - allowing the admin to put a longer/shorter time frame to block an issue
 - resize window.frame (if available) dynamically depending on the size of the underlying table (js)
 - send emails to admin / bounty hunter
+    - when a bounty was blocked to admin and bounty hunter
+    - when a bounty was canceld to admin and bounty hunter
+    - when a bounty was requested for approval to admin and bounty hunter
+    - when a bounty was approved to bounty hunter
+    - when bounty was not getting "request-approval" state admin should be informed by email.
+
 - approve bounty on github (change state to closed)
 - add doichain ci design to template / css
 - improve style of table
