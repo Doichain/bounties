@@ -3,6 +3,7 @@
 ## Connects to a Github profile reads out issues with a certain label and provides and admin frontend to add and configure the imported bounties. Users (bounty hunters) can block a bounty until the blocked date.
 
 ### TODOs
+- when requesting "Approval" please add possibility to add comment to reference a PullRequest or other information which is saved and  msent to admin from bounty hunter.
 - remove bounty / or disable it from local database if bounty-tag is removed from github
 - allowing the admin to put a longer/shorter time frame to block an issue
 - resize window.frame (if available) dynamically depending on the size of the underlying table (js)
