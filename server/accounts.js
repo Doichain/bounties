@@ -2,7 +2,7 @@
 export function setAccountsConfig() {
     Accounts.config({sendVerificationEmail: true});
     Accounts.emailTemplates.siteName = 'Doichain Bounties';
-    Accounts.emailTemplates.from = 'Doichain Bounties Admin bounties@le-space.de';
+    Accounts.emailTemplates.from = 'Doichain Bounties Admin <bounties@le-space.de>';
     Accounts.emailTemplates.enrollAccount.subject = (user) => {
         return `Welcome to Doichain Bounties, ${user.profile.name}`;
     };
@@ -16,7 +16,7 @@ export function setAccountsConfig() {
     Accounts.emailTemplates.resetPassword.from = () => {
         // Overrides the value set in `Accounts.emailTemplates.from` when resetting
         // passwords.
-        return 'Doichain Bounties Password Reset <no-reply@example.com>';
+        return 'Doichain Bounties Password Reset <doichain@le-space.de>';
     };
     Accounts.emailTemplates.verifyEmail = {
         subject() {
