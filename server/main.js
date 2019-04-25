@@ -18,22 +18,26 @@ Meteor.startup(() => {
 
 if (Meteor.isServer) {
 
+
     Meteor.publish('bounties', function bountiesPublication(filter_id) {
+        //direct access by id (github_id)
+
+        //console.log("-"+filter_id+"-");
 
         if(filter_id){
+             //console.log(Bounties.find().fetch())
             return Bounties.find({github_id: Number(filter_id)}, {sort: {priority: -1}});
         }
         else{
-
+             // console.log(Bounties.find().fetch())
             if(Roles.userIsInRole( Meteor.user(), ['admin'])){ //display all records
                 return Bounties.find({}, {sort: {priority: -1}});
             }else {
+               //console.log(Bounties.find().fetch())
                 const query = { $or: [{bountyEur: {$gt: 0 }}, {bountyDoi: {$gt:0}}] };
                 return Bounties.find(query,{sort: {priority: -1}});
             }
         }
-
-
     });
 
     Meteor.methods({

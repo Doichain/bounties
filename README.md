@@ -3,7 +3,8 @@
 ## Connects to a Github profile reads out issues with a certain label and provides and admin frontend to add and configure the imported bounties. Users (bounty hunters) can block a bounty until the blocked date.
 
 ### TODOs
-- when a bounty is longer blocked then 10 days after "blocked until" don't show it anymore.ае       
+- don't display email address in public - show username (add username to login)
+- when a bounty is longer blocked then 10 days after "blocked until" don't show it anymore      
 - remove bounty / or disable it from local database if bounty-tag is removed from github
 - allowing the admin to put a longer/shorter time frame to block an issue
 - resize window.frame (if available) dynamically depending on the size of the underlying table (js)
