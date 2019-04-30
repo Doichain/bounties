@@ -1,12 +1,16 @@
 
+import {getSettings } from 'meteor/doichain:settings';
+
 export function setAccountsConfig() {
-    Accounts.config({sendVerificationEmail: true , forbidClientAccountCreation:false});
-    Accounts.emailTemplates.siteName = 'Doichain Bounties';
-    Accounts.emailTemplates.from = 'Doichain Bounties Admin <bounties@le-space.de>'; //TODO make this configurable
+    const accounts_sendVerificationEmail = getSettings('accounts.sendVerificationEmail',true);
+    const accounts_forbidClientAccountCreation = getSettings('accounts.forbidClientAccountCreation',false);
+
+    Accounts.config({sendVerificationEmail: accounts_sendVerificationEmail , forbidClientAccountCreation:accounts_forbidClientAccountCreation});
+    Accounts.emailTemplates.siteName = getSettings('accounts.emailTemplates.siteName','Doichain Bounties');
+    Accounts.emailTemplates.from = getSettings('accounts.emailTemplates.from','Doichain Bounties Admin <bounties@le-space.de>');
     Accounts.emailTemplates.enrollAccount.subject = (user) => {
         return `Welcome to Doichain Bounties, ${user.profile.name}`;
     };
-
     Accounts.emailTemplates.enrollAccount.text = (user, url) => {
         return 'You have been selected to participate in building a better future!'
             + ' To activate your account, simply click the link below:\n\n'
