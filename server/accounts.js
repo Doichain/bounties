@@ -5,6 +5,7 @@ export function setAccountsConfig() {
     const accounts_sendVerificationEmail = getSettings('accounts.sendVerificationEmail',true);
     const accounts_forbidClientAccountCreation = getSettings('accounts.forbidClientAccountCreation',false);
 
+    //this should go into accounts-password-doichain
     Accounts.config({sendVerificationEmail: accounts_sendVerificationEmail , forbidClientAccountCreation:accounts_forbidClientAccountCreation});
     Accounts.emailTemplates.siteName = getSettings('accounts.emailTemplates.siteName','Doichain Bounties');
     Accounts.emailTemplates.from = getSettings('accounts.emailTemplates.from','Doichain Bounties Admin <bounties@le-space.de>');
