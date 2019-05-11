@@ -9,6 +9,13 @@ export function setAccountsConfig() {
     Accounts.config({sendVerificationEmail: accounts_sendVerificationEmail , forbidClientAccountCreation:accounts_forbidClientAccountCreation});
     Accounts.emailTemplates.siteName = getSettings('accounts.emailTemplates.siteName','Doichain Bounties');
     Accounts.emailTemplates.from = getSettings('accounts.emailTemplates.from','Doichain Bounties Admin <bounties@le-space.de>');
+
+
+    /**
+     *
+     * This emails or not send when account-password-doichain is active
+     *
+     *
     Accounts.emailTemplates.enrollAccount.subject = (user) => {
         return `Welcome to Doichain Bounties, ${user.profile.name}`;
     };
@@ -17,7 +24,9 @@ export function setAccountsConfig() {
             + ' To activate your account, simply click the link below:\n\n'
             + url;
     };
-
+     * @param user
+     * @returns {string}
+     */
     Accounts.emailTemplates.resetPassword.from = () => {
         // Overrides the value set in `Accounts.emailTemplates.from` when resetting
         // passwords.
