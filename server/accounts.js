@@ -34,9 +34,21 @@ export function setAccountsConfig() {
         user.roles = ['hunter'];
         return user;
     });
-
-/*    Accounts.ui.config({
-        passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
-    });*/
+	
+	Meteor.publish('allUsers', function(){
+		if(Roles.userIsInRole(this.userId, 'admin')){
+			return Meteor.users.find({});
+		}
+	});
+	
+	Meteor.methods({
+		toggleAdmin(id){
+			if(Roles.userIsInRole(id, "admin")) {
+				Roles.removeUsersFromRoles(id, "admin");
+			} else {
+				Roles.addUsersToRoles(id, "admin")
+			}
+		}
+	})
 
 }

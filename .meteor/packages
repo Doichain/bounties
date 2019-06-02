@@ -11,7 +11,7 @@ blaze-html-templates@1.0.4 # Compile .html files into Meteor Blaze views
 reactive-var@1.0.11            # Reactive variable for tracker
 tracker@1.2.0                 # Meteor's client-side reactive programming library
 
-standard-minifier-css@1.5.2   # CSS minifier run for production mode
+#standard-minifier-css@1.5.2   # CSS minifier run for production mode
 standard-minifier-js@2.4.0    # JS minifier run for production mode
 es5-shim@4.8.0                # ECMAScript 5 compatibility for older browsers
 ecmascript@0.12.4              # Enable ECMAScript2015+ syntax in app code
@@ -21,18 +21,24 @@ aldeed:autoform
 aldeed:collection2@3.0.0
 ongoworks:security
 aslagle:reactive-table
+accounts-base
 accounts-password
-accounts-ui
+useraccounts:unstyled
+raix:handlebar-helpers
+aldeed:template-extension
+#accounts-ui
 underscore
 momentjs:moment
 alanning:roles
 rzymek:moment-locale-de
 rzymek:moment-locale-es
 rzymek:moment-locale-ru
-twbs:bootstrap
+#twbs:bootstrap
 kadira:flow-router
 perak:markdown
 joshowens:shareit
-fortawesome:fontawesome
+#fortawesome:fontawesome
 xvendo:clipboardjs
-lookback:tooltips
+#lookback:tooltips
+
+msavin:mongol
