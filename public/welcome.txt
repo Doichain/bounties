@@ -1,0 +1,18 @@
+Welcome to the Doichain Bounty Project!
+
+Please confirm your account creation here: ${confirmation_url}
+
+We regard your account creation as permission to send you emails related to Doichain Bounty project and tasks.
+We will not send any other information to you nor share it with others,
+
+We store this permission visible for you and us in the Doichain blockchain,
+this means you can anytime see the current status of your account and email permission.
+${permission_url}
+
+Here you can also cancel your account with us easily.
+
+We store no personal data about you in the public blockchain.
+
+Kind Regards,
+
+Nico
