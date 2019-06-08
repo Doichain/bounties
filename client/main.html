@@ -1,53 +1,165 @@
 <head>
-  <title>doichain-bounty</title>
-    <script src="//cdn.rawgit.com/zenorocha/clipboard.js/master/dist/clipboard.min.js"></script>
+	<title>Doichain Bounty</title>
+	<script src="https://www.doichain.org/daten/js/iframeResizer.contentWindow.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+ 	<link rel="stylesheet" href="/client/dc_meteor.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<link rel="stylesheet" href="/client/main.css">
+	<link rel="stylesheet" id="ct-google-fonts-css"  href="//fonts.googleapis.com/css?family=Barlow%3Aregular%2C300%2C800%2C700%7CMontserrat%3A700%2Cregular%7COpen+Sans%3A700&#038;subset=latin-ext%2Clatin%2Ccyrillic-ext%2Cvietnamese%2Ccyrillic%2Cgreek-ext%2Cgreek&#038;ver=4.9.9" type="text/css" media="all" />
+  
+  
+<script src="//cdn.rawgit.com/zenorocha/clipboard.js/master/dist/clipboard.min.js"></script>
 
 </head>
 
-<body>
-In order to block a Doichain bounty, you must be logged in please {{> loginButtons}}!
-  <h1>Welcome to Doichain bounties!</h1>
-  {{> reactiveTable collection=bounties fields=fields rowsPerPage=50}}
+<body onLoad="resizeParent();">
+<div class="container-fluid dc-container">
+	<!-- Login -->
+	{{> AccountNav}}
+	<!-- Login END -->
+	
+	<!-- Filter 
+	<div class="row dc-filter">
+  		<div class="col-md-8">
+  			<div class="form-inline">
+  				<div class="form-group">
+    				<label for="orderBy">Order by:</label>
+   					<select class="form-control" id="orderBy">
+  						<option>No filter</option>
+  						<option>State</option>
+  						<option>Titel</option>
+  						<option>Create date</option>
+  						<option>Updated</option>
+  						<option>Bounty €</option>
+						<option>Bounty DOI</option>
+						<option>Priority</option>
+					</select>
+				</div>
+				<div class="form-group">
+    				<label for="orderUpDown" class="ml-sm-4">ASC / DESC:</label>
+   					<select class="form-control" id="orderUpDown">
+   						<option>No filter</option>
+  						<option>Descending</option>
+  						<option>Ascending</option>
+					</select>
+				</div>
+			</div>
+  		</div>
+		<div class="col-md-4">
+			<div id="reactive-table-1-filter-DC" class="input-group"> <span class="input-group-addon"> <i class="fa fa-filter"></i> </span>
+				<input class="reactive-table-input form-control" type="text" placeholder="Search...">
+			</div>
+		</div>
+	</div>
+	 Filter END -->
+	 
+	<div class="row">
+		<div class="col-md-12">
+			{{> reactiveTable collection=bounties fields=fields rowsPerPage=15 id="dc-table" class=" " showRowCount=true showFilter=false}}
+		</div>
+	</div>	
+</div>
 
-{{#if isInRole 'admin'}}<input type="button" value="SyncWithGithUb" class="gitHubSync">{{/if}}
 
-{{ > tooltips }}
+<script>
+	$(document).ready(function() {
+		// add a target blank attribute to all links in bounty description 
+		$( "body" ).click(function() {
+			$(".dc-bounty-description a").attr("target","_blank");
+		});		
+	});
+</script>
+
 </body>
 
 <template name="bountyMain">
-    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse{{github_id}}" aria-expanded="false" aria-controls="collapse{{github_id}}">
-        {{title}}
-    </button>
-    <div class="collapse" id="collapse{{github_id}}">
-        <div class="card card-body">
-            <table width="100%">
-                <tr>
-                    <td width="100%">
-                        <p>{{#markdown}}{{body}}{{/markdown}}</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <table width="100%"><tr><td>
-                            <a href="{{html_url}}" data-tooltip=" Open GitHub Issue " target='_blank'>
-                                <i class="fa fa-github fa-2x"></i>
-                            </a>
-                        </td>
-                            <td><a href="#" class="btn-copy-link"
-                                   data-tooltip=" Copy https://www.doichain.org/en/bounties/{{github_id}}/ into clipboard "
-                                   data-clipboard-text="https://www.doichain.org/en/bounties/{{github_id}}/"><i class="fa fa-clipboard fa-2x" aria-hidden="true"></i></a></td>
-                            <td align="right ">{{>shareit shareData}}</td></tr></table>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</template>
-
-<template name="labels">
-    {{#each labels}}
-        <span class="badge badge-pill" style="background-color:#{{this.color}}">{{this.name}}</span>
-    {{/each}}
+	<div class="dc-card">
+		<div class="dc-state dc-{{stateColor}}-state">
+			{{state}}
+		</div>
+		<div class="dc-card-body">
+			<div class="row align-items-center">
+				<div class="col-md-9">
+					<h3 data-toggle="collapse" data-target="#collapse{{github_id}}" aria-expanded="false" aria-controls="collapse{{github_id}}">{{title}}</h3>
+					{{#each labels}}
+						<span class="badge">{{this.name}}</span>
+					{{/each}}
+					<div class="collapse" id="collapse{{github_id}}">
+						<div class="dc-bounty-description">
+							{{#markdown}}{{body}}{{/markdown}}
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 dc-bounty">
+					<label>Bounty</label>
+					<span>{{> bountyDoi }} DOI</span>
+				</div>
+			</div>
+		</div>
+		{{#if currentUser }}
+			<div class="dc-details-wrapper">
+				<div class="row align-items-center">
+					<div class="col-md-12">
+						<div class="dc-details">
+							<span class="dc-detail-item nowrap"><i class="{{isPriorityIcon}} fa-fw"></i><span>Priority</span> {{> priority }}</span>
+							<span class="dc-detail-item"><i class="far fa-clock fa-fw"></i><span>Created</span> {{created}}</span>
+							<span class="dc-detail-item"><i class="fas fa-code-branch fa-fw"></i><span>Updated</span> {{updated}}</span>
+							{{#if isState 'blocked'}}
+								<span class="dc-detail-item"><i class="fas fa-lock fa-fw"></i><span>Blocked by</span> {{blockedBy.by}}<i class="fas fa-arrow-right fa-fw"></i><strong>until:</strong> {{blockedBy.blockedUntil}} </span>
+							{{/if}}
+							{{#if isState 'cancelled'}}
+								<span class="dc-detail-item"><i class="far fa-times-circle fa-fw"></i><span>Cancelled by</span> {{blockedBy.by}}</span>
+							{{/if}}
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Loged in Action Buttons -->
+			<div class="dc-action-btn-wrapper">
+				<div class="row align-items-center">
+					<div class="col-7">
+						{{> blockBounty }}
+					</div>
+					<div class="col-5">
+						<div class="dc-detail-share">
+							<a href="{{html_url}}" target='_blank' class="dc-tooltip-left"><i class="fab fa-github"></i><span>Open GitHub Issue</span></a>
+							<a href="#" class="dc-tooltip-left btn-copy-link" data-clipboard-text="https://www.doichain.org/en/bounties/{{github_id}}"><i class="fas fa-copy"></i><span>Copy Bounty URL into clipboard</span></a>
+							<a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.doichain.org%2Fbounties%2F{{github_id}}&text=Doichain%20bounty%3A%20{{title}}" target='_blank' class="dc-tooltip-left"><i class="fab fa-twitter"></i><span>Share on Twitter</span></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		{{else}}
+			<div class="dc-details-wrapper">
+				<div class="row align-items-center">
+					<div class="col-md-10">
+						<div class="dc-details">
+							<span class="dc-detail-item nowrap"><i class="{{isPriorityIcon}} fa-fw"></i><span>Priority</span> {{priority}}</span>
+							<span class="dc-detail-item"><i class="far fa-clock fa-fw"></i><span>Created</span> {{created}}</span>
+							<span class="dc-detail-item"><i class="fas fa-code-branch fa-fw"></i><span>Updated</span> {{updated}}</span>
+							{{#if isState 'blocked'}}
+								<span class="dc-detail-item"><i class="fas fa-lock fa-fw"></i><span>Blocked by</span> an awesome person</span>
+							{{/if}}
+							{{#if isState 'cancelled'}}
+								<span class="dc-detail-item"><i class="far fa-times-circle fa-fw"></i><span>Cancelled:</span> Someone gave up. I'm sure you'll do better. Sign in to block this bounty.</span>
+							{{/if}}
+						</div>
+					</div>
+					<div class="col-md-2">
+						<div class="dc-detail-share">
+							<a href="{{html_url}}" target='_blank' class="dc-tooltip-left"><i class="fab fa-github"></i><span>Open GitHub Issue</span></a>
+							<a href="#" class="dc-tooltip-left btn-copy-link" data-clipboard-text="https://www.doichain.org/en/bounties/{{github_id}}"><i class="fas fa-copy"></i><span>Copy Bounty URL into clipboard</span></a>
+							<a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.doichain.org%2Fbounties%2F{{github_id}}&text=Doichain%20bounty%3A%20{{title}}" target='_blank' class="dc-tooltip-left"><i class="fab fa-twitter"></i><span>Share on Twitter</span></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		{{/if}}
+		<!-- Loged in Action Buttons END-->
+	</div>
 </template>
 
 <template name="bountyEur">
@@ -59,66 +171,254 @@ In order to block a Doichain bounty, you must be logged in please {{> loginButto
 </template>
 
 <template name="bountyDoi">
-{{#if isInRole 'admin'}}
-    <input type="text" value="{{bountyDoi}}" class="bountyDoi">
-{{else}}
-    {{bountyDoi}}
-{{/if}}
+	{{#if isInRole 'admin'}}
+		<input type="text" class="bountyDoi dc-bounty-input form-control" value="{{bountyDoi}}">
+	{{else}}
+		{{bountyDoi}}
+	{{/if}}
 </template>
 
 <template name="priority">
-{{#if isInRole 'admin'}}
-    <select class="priority">
-        {{#each priorityEements}}
-            <option {{prioritySelected this ../priority}}>{{this}}</option>
-        {{/each}}
-    </select>
-{{else}}
-    {{priority}}
-{{/if}}
+	{{#if isInRole 'admin'}}
+		<select class="priority dc-priority form-control">
+			{{#each priorityEements}}
+				<option {{prioritySelected this ../priority}}>{{this}}</option>
+			{{/each}}
+		</select>
+	{{else}}
+		{{priority}}
+	{{/if}}
 </template>
 
 <template name="blockBounty">
-    {{#if currentUser }}
+	{{#if currentUser }}
+		{{#unless isInRole 'admin'}}
+			{{#if blockedBy}}
+				{{#if isState 'cancelled'}}
+					<button type="button" class="blockBounty btn btn-primary btn-sm btn-success dc-action-btn">Block bounty now</button>
+				{{/if}}
+				{{#if isState 'blocked'}}
+					{{#if isMine}}
+						<button type="button" class="requestApproval btn btn-primary btn-sm btn-success dc-action-btn">Request Approval</button>
+						<button type="button" class="cancelBounty btn btn-primary btn-sm btn-danger dc-action-btn">Cancel</button>
+					{{/if}}
+				{{/if}}
+				{{#if isState 'under review'}}
+					{{#if isMine}}
+						<button type="button" class="cancelBounty btn btn-primary btn-sm btn-danger dc-action-btn">Cancel</button>
+					{{/if}}
+				{{/if}}
+			{{else}}
+				<button type="button" class="blockBounty btn btn-primary btn-sm btn-success dc-action-btn">Block bounty now</button>
+			{{/if}}
+		{{/unless}}
 
-        {{#unless isInRole 'admin'}}
-            {{#if blockedBy}}
-                state: {{blockedBy.state}} <br>
-                by: {{blockedBy.by}} <br>
-                until:  {{blockedBy.blockedUntil}}
-                {{#if isState 'cancelled'}}
-                    <input type="button" value="Block" class="blockBounty">
-                {{/if}}
-                {{#if isState 'blocked'}}
-                    {{#if isMine}}
-                        <input type="button" value="Cancel" class="cancelBounty">
-                        <input type="button" value="Request Approval" class="requestApproval">
-                    {{/if}}
-                {{/if}}
-            {{else}}
-                <input type="button" value="Block" class="blockBounty">
-            {{/if}}
-        {{/unless}}
-
-        {{#if isInRole 'admin'}}
-            {{#if blockedBy}}
-                state: {{blockedBy.state}} <br>
-                by: {{blockedBy.by}} <br>
-                until:  {{blockedBy.blockedUntil}}
-                {{#if isState 'cancelled'}}
-                    <input type="button" value="Block" class="blockBounty">
-                {{/if}}
-                {{#if isState 'blocked'}}
-                    <input type="button" value="Cancel" class="cancelBounty">
-                {{/if}}
-                {{#if isState 'under review'}}
-                    <input type="button" value="Approve" class="approveBounty">
-                    <input type="button" value="Cancel" class="cancelBounty">
-                {{/if}}
-            {{else}}
-                <input type="button" value="Block" class="blockBounty">
-            {{/if}}
-        {{/if}}
-    {{/if}}
+		{{#if isInRole 'admin'}}
+			{{#if blockedBy}}
+				{{#if isState 'cancelled'}}
+					<button type="button" class="blockBounty btn btn-primary btn-sm btn-success dc-action-btn">Block bounty now</button>
+				{{/if}}
+				{{#if isState 'blocked'}}
+					<button type="button" class="cancelBounty btn btn-primary btn-sm btn-danger dc-action-btn">Cancel</button>
+				{{/if}}
+				{{#if isState 'under review'}}
+					<button type="button" class="approveBounty btn btn-primary btn-sm btn-success dc-action-btn">Approve</button>
+					<button type="button" class="cancelBounty btn btn-primary btn-sm btn-danger dc-action-btn">Cancel</button>
+				{{/if}}
+			{{else}}
+				<button type="button" class="blockBounty btn btn-primary btn-sm btn-success dc-action-btn">Block bounty now</button>
+			{{/if}}
+		{{/if}}
+	{{/if}}	
 </template>
 
+<template name="AccountNav">
+	<div class="AccountNav">
+		<div class="row dc-menu align-items-center">
+			<div class="col-md-6 dc-login-info">
+				{{#if currentUser }}
+					{{#if isInRole 'admin'}}
+						<button type="button" class="gitHubSync btn btn-primary btn-sm btn-success dc-action-btn">Sync with Github</button>
+					{{else}}
+						Hello {{currentUser.username}}!
+					{{/if}}
+				{{else}}
+					In order to block a Doichain bounty, you must be logged in. Please sign in or create an account.
+				{{/if}}
+			</div>
+			<div class="col-md-6 text-right">
+				<div id="login-buttons">
+					{{#if $not currentUser}}
+						<a class="btn btn-success" id="sign-in-btn" data-toggle="collapse" href="#dc-signIn" role="button" aria-expanded="false" aria-controls="dc-signIn"><i class="fas fa-sign-in-alt mr-1"></i> Sign in</a>
+						<a class="btn btn-success" id="register-btn" data-toggle="collapse" href="#dc-signUp" role="button" aria-expanded="false" aria-controls="dc-signUp"><i class="far fa-edit mr-1"></i> Register</a>
+					{{else}}
+						{{#if isInRole 'admin'}}
+							<a class="btn btn-success" id="users-btn" data-toggle="collapse" href="#dc-users" role="button" aria-expanded="false" aria-controls="dc-users"><i class="fas fa-users mr-1"></i> Users</a>
+						{{/if}}
+						<a class="btn btn-success" id="settings-btn" data-toggle="collapse" href="#dc-settings" role="button" aria-expanded="false" aria-controls="dc-settings"><i class="fas fa-cog mr-1"></i> Settings</a>
+						<a class="btn btn-success" id="logout-btn"><i class="fas fa-sign-out-alt mr-1"></i> Logout</a>
+					{{/if}}
+				</div>
+			</div>
+		</div>
+		<div class="accordion" id="formToggle">
+			{{#if $not currentUser}}
+				<div id="dc-signIn" class="collapse" data-parent="#formToggle">
+					<div class="row m-0">
+						<div class="col-md-12">
+							{{> atForm state='signIn'}}
+							<div class="at-pwd-link">
+								<p><a href="#dc-forgotPwd" class="at-link at-pwd" data-toggle="collapse" aria-expanded="false" aria-controls="dc-forgotPwd">Forgot your password?</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="dc-signUp" class="collapse" data-parent="#formToggle">
+					<div class="row m-0">
+						<div class="col-md-12">
+							{{> atForm state='signUp'}}
+						</div>
+					</div>
+				</div>
+				<div id="dc-forgotPwd" class="collapse" data-parent="#formToggle">
+					<div class="row m-0">
+						<div class="col-md-12">
+							{{> atForm state='forgotPwd'}}
+							<div class="at-pwd-link">
+								<p><a class="at-link at-pwd" data-toggle="collapse" href="#dc-signIn" aria-expanded="false" aria-controls="dc-signIn"><i class="fa fa-angle-left mr-2"></i>Back to Login</a></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{else}}
+				<div id="dc-settings" class="collapse" data-parent="#formToggle">
+					<div class="row m-0">
+						<div class="col-md-12">
+							{{> atForm state='changePwd'}}
+						</div>
+					</div>
+				</div>
+			{{/if}}
+			{{#if isInRole 'admin'}}
+				<div id="dc-users" class="collapse" data-parent="#formToggle">
+					<div class="row m-0">
+						<div class="col-md-12 table-responsive">
+							<h3>Manage users</h3>
+							<hr>
+							<table class="table table-hover text-white">
+								<thead>
+									<tr>
+										<th scope="col">Username</th>
+										<th scope="col">Email</th>
+										<th scope="col">Profession</th>
+										<th scope="col">Role</th>
+										<th scope="col">Created at</th>
+										<th scope="col">Action</th>
+									</tr>
+								</thead>
+							  	<tbody>
+							  		{{#each users}}
+										<tr>
+											<td class="align-middle">{{username}}</td>
+											<td class="align-middle">{{userEmail}}</td>
+											<td class="align-middle">{{profile.profession}}</td>
+											<td class="align-middle">{{roles}}</td>
+											<td class="align-middle">{{created}}</td>
+											<td class="align-middle">
+												{{#if isAdmin}}
+													<a class="btn btn-danger btn-sm text-white toggle-admin">Remove Admin</a>
+												{{else}}
+													<a class="btn btn-success btn-sm text-white toggle-admin">Make Admin</a>
+												{{/if}}
+											</td>
+										</tr>
+									{{/each}}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			{{/if}}
+		</div>
+	</div>
+</template>
+
+<template name="override-atTitle">
+	<div class="row">
+		<div class="col-md-12">
+			<h3>{{title}}</h3>
+			<hr>
+		</div>
+  	</div>
+</template>
+
+<template name="override-atTermsLink">
+  <div class="at-terms-link at-wrap">
+    <p>
+      {{text}}
+      {{#if privacyUrl}}
+        <a href="{{privacyUrl}}" class="{{disabled}}" target="_blank">{{privacyLinkText}}</a>
+      {{/if}}
+      {{#if showTermsAnd}}
+        {{and}}
+      {{/if}}
+      {{#if termsUrl}}
+        <a href="{{termsUrl}}" class="{{disabled}}" target="_blank">{{termsLinkText}}</a>
+      {{/if}}
+    </p>
+  </div>
+</template>
+
+<template name="override-atPwdForm">
+		<form role="form" id="at-pwd-form" class="{{disabled}}" novalidate action="#" method="POST">
+			<div class="row align-items-end">
+				{{#each fields}}
+					<div class="col-md-4">
+						{{> atInput}}
+					</div>
+				{{/each}}
+				<div class="col-md-4">
+					<div class="form-group">
+						{{> atPwdFormBtn}}
+					</div>
+				</div>
+		  	</div>
+		  	{{#if showReCaptcha}}
+				{{> atReCaptcha}}
+		  	{{/if}}
+		</form>
+</template>
+
+<template name="override-atTextInput">
+	<div class="form-group {{#if isValidating}}validating{{/if}} {{#if hasError}}has-error{{/if}} {{#if hasSuccess}}has-success{{/if}} {{#if feedback}}has-feedback{{/if}}">
+		{{#if showLabels}}
+		  <label for="at-field-{{_id}}">
+			{{displayName}} {{#unless required}}{{optionalText}}{{/unless}}
+		  </label>
+		{{/if}}
+		<input type="{{type}}" id="at-field-{{_id}}" name="at-field-{{_id}}" placeholder="{{placeholder}}" autocapitalize="none" autocorrect="off" class="form-control">
+		{{#if hasIcon}}
+			<span class="{{iconClass}}"></span>
+		{{/if}}
+		{{#if hasError}}
+		  <span>{{errorText}}</span>
+		{{/if}}
+	</div>
+</template>
+
+<template name="override-atSelectInput">
+	<div class="form-group">
+		<label for="at-field-{{_id}}">{{displayName}}</label>
+		<select id="at-field-{{_id}}" name="at-field-{{_id}}" class="form-control">
+		  {{#each values}}
+			<option value="{{value}}">{{text}}</option>
+		  {{/each}}
+		</select>
+	</div>
+</template>
+
+<template name="override-atPwdFormBtn">
+	<button type="submit" class="at-btn submit {{submitDisabled}} btn btn-success" id="at-btn">
+		{{buttonText}}
+	</button>
+</template>

@@ -2,6 +2,7 @@
 import {getSettings } from 'meteor/doichain:settings';
 
 export function setAccountsConfig() {
+    Accounts.config({sendVerificationEmail:true});
    /* const accounts_sendVerificationEmail = getSettings('accounts.sendVerificationEmail',true);
     const accounts_forbidClientAccountCreation = getSettings('accounts.forbidClientAccountCreation',false);
 
@@ -52,9 +53,21 @@ export function setAccountsConfig() {
         user.roles = ['hunter'];
         return user;
     });
-
-/*    Accounts.ui.config({
-        passwordSignupFields: 'USERNAME_AND_OPTIONAL_EMAIL'
-    });*/
+	
+	Meteor.publish('allUsers', function(){
+		if(Roles.userIsInRole(this.userId, 'admin')){
+			return Meteor.users.find({});
+		}
+	});
+	
+	Meteor.methods({
+		toggleAdmin(){
+			if(Roles.userIsInRole(this.userId, "admin")) {
+				Roles.removeUsersFromRoles(this.userId, "admin");
+			} else {
+				Roles.addUsersToRoles(this.userId, "admin")
+			}
+		}
+	})
 
 }
