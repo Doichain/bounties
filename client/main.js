@@ -1,5 +1,8 @@
 import { Template } from 'meteor/templating';
+import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 import Bounties from '../imports/collections.js'
+import SettingsTable from "meteor/doichain:settings";
+import './settings.html';
 import './main.html';
 
 ShareIt.configure({
@@ -22,6 +25,14 @@ ShareIt.configure({
 const locale = navigator.language || navigator.userLanguage;
 moment.locale(locale.substring(0,2));
 let id_filter;
+
+FlowRouter.route('/settings', {
+    name: 'Settings.list',
+    action(params, queryParams) {
+        console.log('settings called.')
+        BlazeLayout.render("settingsMain");
+    }
+});
 
 FlowRouter.route('/:_id', {
     name: 'Bounties.show',
@@ -171,3 +182,9 @@ Template.blockBounty.helpers({
     }
 
 });
+
+Template.settings.helpers({
+    SettingsTable() {
+        return SettingsTable;
+    }
+})
