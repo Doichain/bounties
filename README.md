@@ -2,6 +2,11 @@
 
 ## Connects to a Github profile reads out issues with a certain label and provides and admin frontend to add and configure the imported bounties. Users (bounty hunters) can block a bounty until the blocked date.
 
+### Installation
+1. 
+
+
+
 ### TODOs
 - don't display email address in public - show username (add username to login)
 - when a bounty is longer blocked then 10 days after "blocked until" don't show it anymore      
