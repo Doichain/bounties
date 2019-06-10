@@ -242,7 +242,8 @@ AccountsTemplates.configure({
 	enablePasswordChange: true,
 	hideSignUpLink: true,
 	hideSignInLink: true,
-	privacyUrl: 'https://www.doichain.org/datenschutzerklaerung/'
+    sendVerificationEmail: true,
+    privacyUrl: 'https://www.doichain.org/datenschutzerklaerung/'
 });
 
 

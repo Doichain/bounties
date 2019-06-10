@@ -2,6 +2,7 @@
 import {getSettings } from 'meteor/doichain:settings';
 
 export function setAccountsConfig() {
+
     Accounts.config({sendVerificationEmail:true});
    /* const accounts_sendVerificationEmail = getSettings('accounts.sendVerificationEmail',true);
     const accounts_forbidClientAccountCreation = getSettings('accounts.forbidClientAccountCreation',false);
@@ -13,14 +14,14 @@ export function setAccountsConfig() {
     //TODO giving a real name to the email address is not supported by Doichain right now
     //Accounts.emailTemplates.from = getSettings('accounts.emailTemplates.from','Doichain Bounties Admin <bounties@le-space.de>');
 
-    Accounts.emailTemplates.from = getSettings('accounts.emailTemplates.from','bounties@le-space.de');
+    Accounts.emailTemplates.from = getSettings('accounts.emailTemplates.from','bounties@doichain.org');
 
 
     /**
      *
      * This emails or not send when account-password-doichain is active
      *
-     *
+
     Accounts.emailTemplates.enrollAccount.subject = (user) => {
         return `Welcome to Doichain Bounties, ${user.profile.name}`;
     };
@@ -28,7 +29,8 @@ export function setAccountsConfig() {
         return 'You have been selected to participate in building a better future!'
             + ' To activate your account, simply click the link below:\n\n'
             + url;
-    };
+    };**/
+    /*
      * @param user
      * @returns {string}
      */
@@ -53,21 +55,4 @@ export function setAccountsConfig() {
         user.roles = ['hunter'];
         return user;
     });
-	
-	Meteor.publish('allUsers', function(){
-		if(Roles.userIsInRole(this.userId, 'admin')){
-			return Meteor.users.find({});
-		}
-	});
-	
-	Meteor.methods({
-		toggleAdmin(){
-			if(Roles.userIsInRole(this.userId, "admin")) {
-				Roles.removeUsersFromRoles(this.userId, "admin");
-			} else {
-				Roles.addUsersToRoles(this.userId, "admin")
-			}
-		}
-	})
-
 }

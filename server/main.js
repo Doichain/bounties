@@ -3,8 +3,22 @@ import {listForRepo} from './githubSync';
 import {setAccountsConfig} from "./accounts";
 import Bounties from '../imports/collections.js'
 
-Meteor.startup(() => {
+/*
+* put this only one time into a folder reachable from client and server
+* see:
+* - https://github.com/meteor-useraccounts/core/blob/master/Guide.md
+* - http://khaidoan.wikidot.com/meteor-authentication-customize
+*/
+AccountsTemplates.configure({
+    showForgotPasswordLink: true,
+    enablePasswordChange: true,
+    hideSignUpLink: true,
+    hideSignInLink: true,
+    sendVerificationEmail: true,
+    privacyUrl: 'https://www.doichain.org/datenschutzerklaerung/'
+});
 
+Meteor.startup(() => {
     if(!Accounts.findUserByUsername('admin')){
         const adminUser = Accounts.createUser({username: 'admin',
                 email : 'doichain-bounties@doichain.org',
@@ -18,6 +32,11 @@ Meteor.startup(() => {
 
 if (Meteor.isServer) {
 
+    Meteor.publish('allUsers', function(){
+        if(Roles.userIsInRole(this.userId, 'admin')){
+            return Meteor.users.find({});
+        }
+    });
 
     Meteor.publish('bounties', function bountiesPublication(filter_id) {
         //direct access by id (github_id)
@@ -103,6 +122,13 @@ if (Meteor.isServer) {
             //TODO if approved set github_state to closed (on github too!)
             //TODO send email to hunter about approval and send money (automatically?!)
             return "Issue:"+github_id+" approved";
+        },
+        toggleAdmin(){
+            if(Roles.userIsInRole(this.userId, "admin")) {
+                Roles.removeUsersFromRoles(this.userId, "admin");
+            } else {
+                Roles.addUsersToRoles(this.userId, "admin")
+            }
         }
     });
 }

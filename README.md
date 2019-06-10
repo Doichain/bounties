@@ -6,6 +6,10 @@
 1. Install meteor and clone this repository, cd into it
 2. Run ````meteor npm install``
 3. Get a Doichain authToken and userId from your Doichain dApp via REST see: https://github.com/Doichain/dapp/blob/master/doc/en/rest-api.md#authentication
+or just do: 
+```
+curl -H "Content-Type: application/json" -X POST -d '{"username":"admin","password":"password"}' http://localhost:4010/api/v1/login #in case your dApp runs on port 4010
+```
 4. Configure settings.json to connect to your Doichain dApp with your credentials like so: 
 ```
 {
