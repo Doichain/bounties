@@ -123,11 +123,13 @@ if (Meteor.isServer) {
             //TODO send email to hunter about approval and send money (automatically?!)
             return "Issue:"+github_id+" approved";
         },
-        toggleAdmin(){
+        toggleAdmin(id){
             if(Roles.userIsInRole(this.userId, "admin")) {
-                Roles.removeUsersFromRoles(this.userId, "admin");
-            } else {
-                Roles.addUsersToRoles(this.userId, "admin")
+                if(Roles.userIsInRole(id, "admin")) {
+                    Roles.removeUsersFromRoles(id, "admin");
+                } else {
+                    Roles.addUsersToRoles(id, "admin")
+                }
             }
         }
     });
