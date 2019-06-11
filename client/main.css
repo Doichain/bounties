@@ -2,6 +2,7 @@ body {
 	font-family: 'Barlow';
 	font-size: 16px;
 	line-height: 32px;
+	padding: 0px;
 }
 a {
     color: #428bca;
