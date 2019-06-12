@@ -30,7 +30,7 @@ FlowRouter.route('/settings', {
     name: 'Settings.list',
     action(params, queryParams) {
         console.log('settings called.')
-        BlazeLayout.render("settingsMain");
+        BlazeLayout.render("settings");
     }
 });
 
