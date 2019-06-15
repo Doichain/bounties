@@ -243,7 +243,13 @@ AccountsTemplates.configure({
 	hideSignUpLink: true,
 	hideSignInLink: true,
     sendVerificationEmail: true,
-    privacyUrl: 'https://www.doichain.org/datenschutzerklaerung/'
+    privacyUrl: 'https://www.doichain.org/datenschutzerklaerung/',
+	reCaptcha: {
+        siteKey: "6LdxAakUAAAAAJfziv2MT0nQngu5VxM6Lf3Fb9ma",
+        theme: "light",
+        data_type: "image",
+    },
+    showReCaptcha: true
 });
 
 

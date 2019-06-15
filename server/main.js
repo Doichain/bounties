@@ -15,7 +15,10 @@ AccountsTemplates.configure({
     hideSignUpLink: true,
     hideSignInLink: true,
     sendVerificationEmail: true,
-    privacyUrl: 'https://www.doichain.org/datenschutzerklaerung/'
+    privacyUrl: 'https://www.doichain.org/datenschutzerklaerung/',
+	reCaptcha: {
+        secretKey: "6LdxAakUAAAAAOiirWmvD8D1I01aW8GdsTUBwRxb",
+    }
 });
 
 Meteor.startup(() => {
