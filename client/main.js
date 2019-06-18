@@ -122,14 +122,14 @@ Template.body.helpers({
 
     let filter = {};
     if(id_filter) filter = {github_id: filter};
-    const bounties = Bounties.find({}, {sort: {priority: -1}});
+    const bounties = Bounties.find({}, {sort: {priority: -1, created_at:1, updated_at:1}});
     return bounties;
   },
   fields: function () {
       return [
             {fieldId: 'title',key: 'title',label: 'Title', tmpl: Template.bountyMain},
-		    {fieldId: 'priority', key: 'priority', label: 'Priority', /*sortOrder: 0, sortDirection: 'descending',*/ hidden: true, tmpl: Template.priority},
-		  	{fieldId: 'created_at',key: 'created_at',label: 'created', sortOrder: 0, sortDirection: 'ascending', hidden: true, fn: function (value) { return  moment(value).fromNow();}},
+		    {fieldId: 'priority', key: 'priority', label: 'Priority',  sortOrder: 0, sortDirection: 'descending', hidden: true, tmpl: Template.priority},
+		  	{fieldId: 'created_at',key: 'created_at',label: 'created', sortOrder: 1, sortDirection: 'ascending', hidden: true, fn: function (value) { return  moment(value).fromNow();}},
 		    {fieldId: 'updated_at',key: 'updated_at',label: 'updated',hidden: true,fn: function (value) { return  moment(value).fromNow();}},
             {fieldId: 'state',key: 'state',label: 'State',hidden: true,},
             {fieldId: 'labelsId',key: 'labels',label: 'Labels',hidden: true, tmpl: Template.labels},
