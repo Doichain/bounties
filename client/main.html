@@ -320,11 +320,16 @@
 											<td class="align-middle">{{roles}}</td>
 											<td class="align-middle">{{created}}</td>
 											<td class="align-middle">
+
+                                                {{#if isNotAdminUserUser _id}}
+                                                    <a class="btn btn-success btn-sm text-white delete-user">Delete</a>
+                                                {{/if}}
 												{{#if isAdmin}}
 													<a class="btn btn-danger btn-sm text-white toggle-admin">Remove Admin</a>
 												{{else}}
 													<a class="btn btn-success btn-sm text-white toggle-admin">Make Admin</a>
 												{{/if}}
+
 											</td>
 										</tr>
 									{{/each}}

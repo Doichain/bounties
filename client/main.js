@@ -29,7 +29,6 @@ let id_filter;
 FlowRouter.route('/settings', {
     name: 'Settings.list',
     action(params, queryParams) {
-        console.log('settings called.')
         BlazeLayout.render("settings");
     }
 });
@@ -306,7 +305,11 @@ Template.AccountNav.helpers({
 	},
 	isAdmin: function() {
 		return Roles.userIsInRole(this._id, "admin") ? "admin" : "";
-	}
+	},
+    isNotAdminUserUser: function (id) {
+        if(Meteor.userId() !== id) return true
+        else false
+    }
 });
 
 Template.AccountNav.events({
@@ -314,6 +317,16 @@ Template.AccountNav.events({
 		Meteor.logout();
 	},
 	"click .toggle-admin": function() {
-		Meteor.call("toggleAdmin", this._id);
-	}
+		Meteor.call("toggleAdmin", this._id,(err, res) => {
+            console.log(res);
+            err?alert(err):'';
+        });
+	},
+    "click .delete-user": function() {
+        Meteor.call("deleteUser", this._id, (err, res) => {
+            if(res) alert('deleted')
+            else alert('could not delete user - maybe has or had active bounties?')
+            err?alert(err):'';
+        });
+    },
 });
