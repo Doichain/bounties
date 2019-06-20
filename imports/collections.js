@@ -9,7 +9,6 @@ const labelsSchema = new SimpleSchema({
 
 const blockedBySchema = new SimpleSchema({
     userId: String,
-    email: String,
     blockTime: {
         type: Number,
         label: "Blocktime",

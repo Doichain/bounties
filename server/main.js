@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import {listForRepo} from './githubSync';
 import {setAccountsConfig} from "./accounts";
 import Bounties from '../imports/collections.js'
+import {getSettings} from "meteor/doichain:settings";
 
 /*
 * put this only one time into a folder reachable from client and server
@@ -81,8 +82,46 @@ if (Meteor.isServer) {
         },
         'blockBounty'({github_id}){
                 if(Meteor.userId()){
-                    const blockedBy = {userId:Meteor.userId(),state:"blocked",email:Meteor.user().emails[0].address}
+                    const blockedBy = {userId:Meteor.userId(),state:"blocked"}
                     Bounties.update({github_id:github_id}, {$addToSet:{blockedBy:blockedBy},$set:{state:'blocked'}});
+
+                    //send email to bounty hunter
+                    const emailUserTo = Meteor.user().emails[0].address;
+                    const emailUserFrom = getSettings('accounts.emailTemplates.from','bounties@doichain.org')
+
+                    try {
+                        Email.send({
+                            to: emailUserTo,
+                            from: emailUserFrom,
+                            subject: "Doichain Bounties - state update: blocked bounty id:"+github_id,
+                            text: "Dear "+Meteor.user().username+",\nYou just blocked Doichain bounty "+github_id+
+                                " visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
+                        });
+                        console.log('block email sent to user:'+emailUserTo)
+                    }catch(ex){
+                        console.log('could not send block email to user:'+user,ex)
+                    }
+                    
+                    const adminUsers = Roles.getUsersInRole('admin')
+                    adminUsers.forEach(function (user) {
+                       // console.log("user",user)
+                        try {
+                            const to = user.emails[0].address;
+
+                            Email.send({
+                                to: to,
+                                from: emailUserFrom,
+                                subject: "Doichain Bounties - state update: blocked bounty id:"+github_id,
+                                text: "Dear "+user.username+",\nUser "+Meteor.user().username+" just blocked Doichain bounty "+github_id+
+                                    " visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
+                            });
+
+                            console.log('block email sent to admin:'+to)
+                        }catch(ex){
+                            console.log('could not send block email to admin:'+user,ex)
+                        }
+                    })
+
                     return "Issue:"+github_id+" blocked by "+Meteor.userId();
                 }
                 //TODO send email to admin who blocked the issue
@@ -92,10 +131,47 @@ if (Meteor.isServer) {
             const bounty = Bounties.findOne({github_id:github_id}); //find the bounty we are working on
             const lastUser = bounty.blockedBy[bounty.blockedBy.length-1].userId;
             //user must be authenticated, last block must belong to user (or admin), status must be "blocked"
+
             if(Meteor.userId() && (Meteor.userId()==lastUser || Roles.userIsInRole( Meteor.user(), ['admin']))){
                 const blockedBy = {userId:Meteor.userId(),state:"cancelled",email:Meteor.user().emails[0].address}
                 Bounties.update({github_id:github_id}, {$addToSet:{blockedBy:blockedBy},$set:{state:'cancelled'}});
-                //TODO send Email to Administrator if hunter cancelled if admin cancelled send it to hunter
+
+                //send email to last user
+                const emailUser = Meteor.users.findOne({"_id": lastUser})
+                const emailUserFrom = getSettings('accounts.emailTemplates.from','bounties@doichain.org')
+
+                try {
+                    Email.send({
+                        to: emailUser.emails[0].address,
+                        from: emailUserFrom,
+                        subject: "Doichain Bounties - state update: canceled bounty id:"+github_id,
+                        text: "Dear "+emailUser.username+",\nDoichain bounty "+github_id+
+                            " just got cancelled by "+Meteor.user().username+" visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
+                    });
+                    console.log('cancel email sent to:',emailUser)
+                }catch(ex){
+                    console.log('could not send cancel email to admin user:'+emailUser,ex)
+                }
+
+                const adminUsers = Roles.getUsersInRole('admin')
+                adminUsers.forEach(function (user) {
+                    try {
+                        const to = user.emails[0].address;
+
+                        Email.send({
+                            to: to,
+                            from: emailUserFrom,
+                            subject: "Doichain Bounties - state update: cancelled bounty id:"+github_id,
+                            text: "Dear "+user.username+",\nUser "+Meteor.user().username+" just cancelled Doichain bounty "+github_id+
+                                " visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
+                        });
+
+                        console.log('cancel bounty email sent to admin:',to)
+                    }catch(ex){
+                        console.log('could not send cancel bounty email to admin user:'+user,ex)
+                    }
+                })
+
                 return "Issue:"+github_id+" cancelled by "+Meteor.userId();
             }
         },
@@ -105,11 +181,46 @@ if (Meteor.isServer) {
             const lastUser = bounty.blockedBy[bounty.blockedBy.length-1].userId;
             //user must be authenticated, last block must belong to user (or admin), status must be "blocked"
             if(Meteor.userId() && (Meteor.userId()==lastUser || Roles.userIsInRole( Meteor.user(), ['admin']))){
-                const blockedBy = {userId:Meteor.userId(),state:"under review",email:Meteor.user().emails[0].address}
+                const blockedBy = {userId:Meteor.userId(),state:"under review"}
                 Bounties.update({github_id:github_id}, {$addToSet:{blockedBy:blockedBy},$set:{state:'under review'}});
                 console.log('requested review for:',github_id);
 
-                //TODO send Email to Administrator
+                //send email to last user
+                const emailUser = Meteor.users.findOne({"_id": lastUser})
+                const emailUserFrom = getSettings('accounts.emailTemplates.from','bounties@doichain.org')
+
+                try {
+                    Email.send({
+                        to: emailUser.emails[0].address,
+                        from: emailUserFrom,
+                        subject: "Doichain Bounties - state update: approval requested for bounty id:"+github_id,
+                        text: "Dear "+emailUser.username+",\nDoichain bounty "+github_id+
+                            " just requested approval by "+Meteor.user().username+" visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
+                    });
+                    console.log('request approval email sent to:'+emailUser)
+                }catch(ex){
+                    console.log('could not send request approval email to admin user:'+emailUser,ex)
+                }
+
+                const adminUsers = Roles.getUsersInRole('admin')
+                adminUsers.forEach(function (user) {
+                    try {
+                        const to = user.emails[0].address;
+
+                        Email.send({
+                            to: to,
+                            from: emailUserFrom,
+                            subject: "Doichain Bounties - state update: approval requested for bounty id:"+github_id,
+                            text: "Dear "+user.username+",\nUser "+Meteor.user().username+" just requested approval for Doichain bounty "+github_id+
+                                " visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
+                        });
+
+                        console.log('request approval email sent to admin:',to)
+                    }catch(ex){
+                        console.log('could not send request approval email to admin user:'+user,ex)
+                    }
+                })
+
                 return "Issue:"+github_id+" requested review";
             }
         },
@@ -119,11 +230,48 @@ if (Meteor.isServer) {
             if (!Roles.userIsInRole( Meteor.user(), ['admin']) && bounty.state!="under review")
                 return;
 
-            const blockedBy = {userId:Meteor.userId(),state:"approved",email:Meteor.user().emails[0].address}
-            Bounties.update({github_id:github_id}, {$addToSet:{blockedBy:blockedBy},$set:{state:'approved'}});
+            const approvedBy = {userId:Meteor.userId(),state:"approved"}
+            Bounties.update({github_id:github_id}, {$addToSet:{blockedBy:approvedBy},$set:{state:'approved'}});
 
             //TODO if approved set github_state to closed (on github too!)
-            //TODO send email to hunter about approval and send money (automatically?!)
+            const emailUserFrom = getSettings('accounts.emailTemplates.from','bounties@doichain.org')
+            //send email to last user
+            const bountyMembers = Bounties.findOne({github_id:github_id}).blockedBy;
+            const lastUserId = bountyMembers[bountyMembers.length-2].userId
+            const emailUser = Meteor.users.findOne({"_id": lastUserId}).emails[0].address
+            try {
+                Email.send({
+                    to: emailUser.emails[0].address,
+                    from: emailUserFrom,
+                    subject: "Doichain Bounties - state update: approval requested for bounty id:"+github_id,
+                    text: "Dear "+emailUser.username+",\nDoichain bounty "+github_id+
+                        " just requested approval by "+Meteor.user().username+" visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
+                });
+                console.log('approval email sent to user:'+emailUser)
+            }catch(ex){
+                console.log('could not send approval email  to admin user:'+emailUser,ex)
+            }
+
+            const adminUsers = Roles.getUsersInRole('admin')
+            adminUsers.forEach(function (user) {
+                console.log("user",user)
+                try {
+                    const to = user.emails[0].address;
+
+                    Email.send({
+                        to: to,
+                        from: emailUserFrom,
+                        subject: "Doichain Bounties - state update: approval requested for bounty id:"+github_id,
+                        text: "Dear "+user.username+",\nUser "+Meteor.user().username+" just requested approval for Doichain bounty "+github_id+
+                            " visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
+                    });
+
+                    console.log('approval email sent to admin:',to)
+                }catch(ex){
+                    console.log('could not send approval email to admin user:'+user,ex)
+                }
+            })
+
             return "Issue:"+github_id+" approved";
         },
         toggleAdmin(id){

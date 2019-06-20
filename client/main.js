@@ -167,9 +167,8 @@ Template.bountyMain.helpers({
         if(!blocks || blocks.length==0) return null; //if no block return
 
         const blockedUntil =  blocks[blocks.length-1].blockedUntil; //get blockedUntil for this issue
-        const emailaddress = blocks[blocks.length-1].email;
         const state = blocks[blocks.length-1].state;
-        const retObj = {by:emailaddress, state:state, blockedUntil:moment(blockedUntil).format('LLLL')};
+        const retObj = {state:state, blockedUntil:moment(blockedUntil).format('LLLL')};
         return  retObj;//return email address and date until its blocked
     },
     isState: function (state){

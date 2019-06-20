@@ -19,7 +19,7 @@ curl -H "Content-Type: application/json" -X POST -d '{"username":"admin","passwo
     "ssl": false,
     "dappLogin": {"userId": "DKykxytHpP5YzTSWm", "authToken": "JuBw_Ali7t0X9gLGLw7wfS2BBP_frq5iqDIiAMGyp-6" }
   },
-  "Accounts":{"emailTemplates":{"from":"bounties@doichain.org"}}
+  "accounts":{"emailTemplates":{"from":"bounties@doichain.org"}}
 }
 ```
 5. start / update your meteor docker container (see: https://hub.docker.com/r/abernix/meteord)
