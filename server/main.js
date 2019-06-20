@@ -134,6 +134,18 @@ if (Meteor.isServer) {
                     Roles.addUsersToRoles(id, "admin")
                 }
             }
-        }
+        },
+        deleteUser(id){
+            console.log('deleting user:',id)
+            if(this.username==='admin') return; //if somebody wants to delete admin user - dont do it
+            if(Roles.userIsInRole(this.userId, "admin")) {  //user needs admin role to delete a user
+                const foundBounty = Bounties.findOne({blockedBy: {$elemMatch: {userId:id}}})
+                if(!foundBounty){ //if there are or were active bounties don't delete
+                    const retVal = Meteor.users.remove({ _id: id })
+                    if(retVal===1) return true  //if it was deleted return true
+                    else return false
+                }else return false
+            }
+        },
     });
 }

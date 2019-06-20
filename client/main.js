@@ -29,7 +29,6 @@ let id_filter;
 FlowRouter.route('/settings', {
     name: 'Settings.list',
     action(params, queryParams) {
-        console.log('settings called.')
         BlazeLayout.render("settings");
     }
 });
@@ -123,14 +122,14 @@ Template.body.helpers({
 
     let filter = {};
     if(id_filter) filter = {github_id: filter};
-    const bounties = Bounties.find({}, {sort: {priority: -1}});
+    const bounties = Bounties.find({}, {sort: {priority: -1, created_at:1, updated_at:1}});
     return bounties;
   },
   fields: function () {
       return [
             {fieldId: 'title',key: 'title',label: 'Title', tmpl: Template.bountyMain},
-		    {fieldId: 'priority', key: 'priority', label: 'Priority', /*sortOrder: 0, sortDirection: 'descending',*/ hidden: true, tmpl: Template.priority},
-		  	{fieldId: 'created_at',key: 'created_at',label: 'created', sortOrder: 0, sortDirection: 'ascending', hidden: true, fn: function (value) { return  moment(value).fromNow();}},
+		    {fieldId: 'priority', key: 'priority', label: 'Priority',  sortOrder: 0, sortDirection: 'descending', hidden: true, tmpl: Template.priority},
+		  	{fieldId: 'created_at',key: 'created_at',label: 'created', sortOrder: 1, sortDirection: 'ascending', hidden: true, fn: function (value) { return  moment(value).fromNow();}},
 		    {fieldId: 'updated_at',key: 'updated_at',label: 'updated',hidden: true,fn: function (value) { return  moment(value).fromNow();}},
             {fieldId: 'state',key: 'state',label: 'State',hidden: true,},
             {fieldId: 'labelsId',key: 'labels',label: 'Labels',hidden: true, tmpl: Template.labels},
@@ -306,7 +305,11 @@ Template.AccountNav.helpers({
 	},
 	isAdmin: function() {
 		return Roles.userIsInRole(this._id, "admin") ? "admin" : "";
-	}
+	},
+    isNotAdminUserUser: function (id) {
+        if(Meteor.userId() !== id) return true
+        else false
+    }
 });
 
 Template.AccountNav.events({
@@ -314,6 +317,16 @@ Template.AccountNav.events({
 		Meteor.logout();
 	},
 	"click .toggle-admin": function() {
-		Meteor.call("toggleAdmin", this._id);
-	}
+		Meteor.call("toggleAdmin", this._id,(err, res) => {
+            console.log(res);
+            err?alert(err):'';
+        });
+	},
+    "click .delete-user": function() {
+        Meteor.call("deleteUser", this._id, (err, res) => {
+            if(res) alert('deleted')
+            else alert('could not delete user - maybe has or had active bounties?')
+            err?alert(err):'';
+        });
+    },
 });
