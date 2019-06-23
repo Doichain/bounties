@@ -28,5 +28,7 @@ export function listForRepo(){
             }
         });
         })
+    }).catch( function (ex) {
+        console.log('Github could not be queried',ex)
     })
 }

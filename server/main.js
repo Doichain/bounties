@@ -43,12 +43,7 @@ if (Meteor.isServer) {
     });
 
     Meteor.publish('bounties', function bountiesPublication(filter_id) {
-        //direct access by id (github_id)
-
-        //console.log("-"+filter_id+"-");
-
         if(filter_id){
-             //console.log(Bounties.find().fetch())
             return Bounties.find({github_id: Number(filter_id)}, {sort: {priority: -1}});
         }
         else{
@@ -295,5 +290,9 @@ if (Meteor.isServer) {
                 }else return false
             }
         },
+        getUsername(userId){
+            const username =  Meteor.users.find({}).fetch()[0].username
+            return username
+        }
     });
 }

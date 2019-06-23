@@ -103,10 +103,10 @@
 							<span class="dc-detail-item"><i class="far fa-clock fa-fw"></i><span>Created</span> {{created}}</span>
 							<span class="dc-detail-item"><i class="fas fa-code-branch fa-fw"></i><span>Updated</span> {{updated}}</span>
 							{{#if isState 'blocked'}}
-								<span class="dc-detail-item"><i class="fas fa-lock fa-fw"></i><span>Blocked by</span> {{blockedBy.by}}<i class="fas fa-arrow-right fa-fw"></i><strong>until:</strong> {{blockedBy.blockedUntil}} </span>
+								<span class="dc-detail-item"><i class="fas fa-lock fa-fw"></i><span>Blocked by</span> {{getUser blockedBy.by}}<i class="fas fa-arrow-right fa-fw"></i><strong>until:</strong> {{blockedBy.blockedUntil}} </span>
 							{{/if}}
 							{{#if isState 'cancelled'}}
-								<span class="dc-detail-item"><i class="far fa-times-circle fa-fw"></i><span>Cancelled by</span> {{blockedBy.by}}</span>
+								<span class="dc-detail-item"><i class="far fa-times-circle fa-fw"></i><span>Cancelled by</span> {{getUser blockedBy.by}}</span>
 							{{/if}}
 						</div>
 					</div>

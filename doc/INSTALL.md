@@ -1,6 +1,6 @@
 ### Installation
 1. Install meteor and clone this repository, cd into it
-2. Run ````meteor npm install``
+2. Run ```meteor npm install``
 3. Get a Doichain authToken and userId from your Doichain dApp via REST see: https://github.com/Doichain/dapp/blob/master/doc/en/rest-api.md#authentication
 or just do:
 ```
@@ -44,17 +44,20 @@ docker stop doichain_bounties_0.x; docker start doichain_bounties_0.x
 ```          
 
 ### TODOs
-- don't display email address in public - show username (add username to login)
-- when a bounty is longer blocked then 10 days after "blocked until" don't show it anymore      
+- show DOI status in userlist 
+    - button update user profiles requests DOI permission for all current users
+    - button update user profiles requests DOI permission for all current users
+- display blocked
+- when changing state of a bounty increment state on user profile too
+- display number blocked bounty's for each user
+- display number approved bounty's for each user
+- display number cancelled bounty's for each user
+- when a bounty is longer blocked then 10 days after "blocked until" 
+    - don't show it anymore 
+    - send email to admin / bounty hunter
 - remove bounty / or disable it from local database if bounty-tag is removed from github
 - allowing the admin to put a longer/shorter time frame to block an issue
 - resize window.frame (if available) dynamically depending on the size of the underlying table (js)
-- send emails to admin / bounty hunter
-    - when a bounty was blocked to admin and bounty hunter
-    - when a bounty was canceld to admin and bounty hunter
-    - when a bounty was requested for approval to admin and bounty hunter
-    - when a bounty was approved to bounty hunter
-    - when bounty was not getting "request-approval" state admin should be informed by email.
 
 - approve bounty on github (change state to closed)
 - add doichain ci design to template / css

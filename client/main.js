@@ -1,4 +1,5 @@
 import { Template } from 'meteor/templating';
+import { Session } from 'meteor/session'
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 import Bounties from '../imports/collections.js'
 import SettingsTable from "meteor/doichain:settings";
@@ -159,8 +160,13 @@ Template.bountyMain.helpers({
 	updated: function (updated_at){
 		return  moment(this.updated_at).fromNow();
 	},
-	
-	//Blocks
+	getUser: function(userId){
+         Meteor.call('getUsername', {_id: userId}, (err, res) => {
+             err?alert(err):'';
+                Session.set("getUser_"+userId,res)
+         });
+        return Session.get("getUser_"+userId) || "Loading";
+    },
 	blockedBy: function (){
         //find the last blockedBy of this issue
         const blocks = Bounties.findOne({github_id:this.github_id}).blockedBy;
@@ -168,7 +174,12 @@ Template.bountyMain.helpers({
 
         const blockedUntil =  blocks[blocks.length-1].blockedUntil; //get blockedUntil for this issue
         const state = blocks[blocks.length-1].state;
-        const retObj = {state:state, blockedUntil:moment(blockedUntil).format('LLLL')};
+
+        const retObj = {
+            state:state,
+            blockedUntil:moment(blockedUntil).format('LLLL'),
+            by: blocks[blocks.length-1].userId
+        };
         return  retObj;//return email address and date until its blocked
     },
     isState: function (state){
@@ -291,6 +302,7 @@ AccountsTemplates.addFields([
 
 // Get user data
 Meteor.subscribe('allUsers');
+
 
 Template.AccountNav.helpers({
 	users: function() {

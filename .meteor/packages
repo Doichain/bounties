@@ -43,3 +43,4 @@ tmeasday:check-npm-versions
 msavin:mongol
 doichain:accounts-password-doichain
 email
+session
