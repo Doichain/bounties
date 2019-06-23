@@ -58,10 +58,17 @@ docker stop doichain_bounties_0.x; docker start doichain_bounties_0.x
 - remove bounty / or disable it from local database if bounty-tag is removed from github
 - allowing the admin to put a longer/shorter time frame to block an issue
 - resize window.frame (if available) dynamically depending on the size of the underlying table (js)
-
+- when a bounty is longer blocked then 10 days after "blocked until" don't show it anymore      
+- remove bounty / or disable it from local database if bounty-tag is removed from github
+- allowing the admin to put a longer/shorter time frame to block an issue
+- send emails to admin / bounty hunter
+    - when a bounty was blocked to admin and bounty hunter
+    - when a bounty was canceld to admin and bounty hunter
+    - when a bounty was requested for approval to admin and bounty hunter
+    - when a bounty was approved to bounty hunter
+    - when bounty was not getting "request-approval" state admin should be informed by email.
 - approve bounty on github (change state to closed)
-- add doichain ci design to template / css
-- improve style of table
+- Add filtering options (GUI already exists)
 
 
 ### Environment variables
