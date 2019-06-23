@@ -291,7 +291,9 @@ if (Meteor.isServer) {
             }
         },
         getUsername(userId){
-            const username =  Meteor.users.find({}).fetch()[0].username
+          //  console.log("--->",userId)
+            const username =  Meteor.users.findOne(userId).username
+           // console.log(username)
             return username
         }
     });
