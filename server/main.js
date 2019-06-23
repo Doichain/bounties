@@ -94,7 +94,7 @@ if (Meteor.isServer) {
                         });
                         console.log('block email sent to user:'+emailUserTo)
                     }catch(ex){
-                        console.log('could not send block email to user:'+user,ex)
+                        console.log('could not send block email to user:'+emailUserTo,ex)
                     }
                     
                     const adminUsers = Roles.getUsersInRole('admin')
