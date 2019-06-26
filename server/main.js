@@ -41,22 +41,33 @@ if (Meteor.isServer) {
             return Meteor.users.find({});
         }
     });
+    Meteor.publish('bounties', function bountiesPublication(filter_id, orderBy, orderUpDown,stateFilter) {
+            if (filter_id) {
+                return Bounties.find({github_id: Number(filter_id)}, {sort: {priority: -1}});
+            } else {
+                if (orderUpDown === undefined || orderUpDown === null) orderUpDown = -1
+                if (orderBy === undefined || orderBy === null) orderBy = 'title'
+                const sort = {}
+                sort[orderBy] = Number(orderUpDown)
+                let filter = {}
 
-    Meteor.publish('bounties', function bountiesPublication(filter_id) {
-        if(filter_id){
-            return Bounties.find({github_id: Number(filter_id)}, {sort: {priority: -1}});
-        }
-        else{
-             // console.log(Bounties.find().fetch())
-            if(Roles.userIsInRole( Meteor.user(), ['admin'])){ //display all records
-                return Bounties.find({}, {sort: {priority: -1}});
-            }else {
-               //console.log(Bounties.find().fetch())
-                const query = { $or: [{bountyEur: {$gt: 0 }}, {bountyDoi: {$gt:0}}] };
-                return Bounties.find(query,{sort: {priority: -1}});
+                const statesArray = []
+                JSON.parse(stateFilter).forEach(function (state) {
+                    statesArray.push({state: state})
+                })
+                if (statesArray.length > 0) filter = {$or: statesArray}
+
+                if (Roles.userIsInRole(Meteor.user(), ['admin'])) {
+                    return Bounties.find(filter, {sort: sort});
+                } else {
+                    const queryAmount = {$or: [{bountyEur: {$gt: 0}}, {bountyDoi: {$gt: 0}}]};
+                    const query = {$and: [filter, queryAmount]};
+                    const bounties = Bounties.find(query, {sort: sort});
+                    return bounties
+                }
             }
         }
-    });
+    )
 
     Meteor.methods({
         'gitHubSync'() {
@@ -89,8 +100,11 @@ if (Meteor.isServer) {
                             to: emailUserTo,
                             from: emailUserFrom,
                             subject: "Doichain Bounties - state update: blocked bounty id:"+github_id,
-                            text: "Dear "+Meteor.user().username+",\nYou just blocked Doichain bounty "+github_id+
-                                " visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
+                            text: "Dear "+Meteor.user().username+",\n\n" +
+                                "You just blocked Doichain bounty "+github_id+
+                                " visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n" +
+                                "Please attach questions, comments and work results to the linked github issue of this bounty.\n\n" +
+                                "Yours, Doichain.org Bounty Team",
                         });
                         console.log('block email sent to user:'+emailUserTo)
                     }catch(ex){
@@ -107,7 +121,7 @@ if (Meteor.isServer) {
                                 to: to,
                                 from: emailUserFrom,
                                 subject: "Doichain Bounties - state update: blocked bounty id:"+github_id,
-                                text: "Dear "+user.username+",\nUser "+Meteor.user().username+" just blocked Doichain bounty "+github_id+
+                                text: "Dear "+user.username+",\n\nUser "+Meteor.user().username+" just blocked Doichain bounty "+github_id+
                                     " visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
                             });
 
@@ -140,7 +154,7 @@ if (Meteor.isServer) {
                         to: emailUser.emails[0].address,
                         from: emailUserFrom,
                         subject: "Doichain Bounties - state update: canceled bounty id:"+github_id,
-                        text: "Dear "+emailUser.username+",\nDoichain bounty "+github_id+
+                        text: "Dear "+emailUser.username+",\n\nDoichain bounty "+github_id+
                             " just got cancelled by "+Meteor.user().username+" visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
                     });
                     console.log('cancel email sent to:',emailUser)
@@ -157,7 +171,7 @@ if (Meteor.isServer) {
                             to: to,
                             from: emailUserFrom,
                             subject: "Doichain Bounties - state update: cancelled bounty id:"+github_id,
-                            text: "Dear "+user.username+",\nUser "+Meteor.user().username+" just cancelled Doichain bounty "+github_id+
+                            text: "Dear "+user.username+",\n\nUser "+Meteor.user().username+" just cancelled Doichain bounty "+github_id+
                                 " visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
                         });
 
@@ -189,7 +203,7 @@ if (Meteor.isServer) {
                         to: emailUser.emails[0].address,
                         from: emailUserFrom,
                         subject: "Doichain Bounties - state update: approval requested for bounty id:"+github_id,
-                        text: "Dear "+emailUser.username+",\nDoichain bounty "+github_id+
+                        text: "Dear "+emailUser.username+",\n\nDoichain bounty "+github_id+
                             " just requested approval by "+Meteor.user().username+" visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
                     });
                     console.log('request approval email sent to:'+emailUser)
@@ -206,7 +220,7 @@ if (Meteor.isServer) {
                             to: to,
                             from: emailUserFrom,
                             subject: "Doichain Bounties - state update: approval requested for bounty id:"+github_id,
-                            text: "Dear "+user.username+",\nUser "+Meteor.user().username+" just requested approval for Doichain bounty "+github_id+
+                            text: "Dear "+user.username+",\n\nUser "+Meteor.user().username+" just requested approval for Doichain bounty "+github_id+
                                 " visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
                         });
 
@@ -239,7 +253,7 @@ if (Meteor.isServer) {
                     to: emailUser.emails[0].address,
                     from: emailUserFrom,
                     subject: "Doichain Bounties - state update: approval requested for bounty id:"+github_id,
-                    text: "Dear "+emailUser.username+",\nDoichain bounty "+github_id+
+                    text: "Dear "+emailUser.username+",\n\nDoichain bounty "+github_id+
                         " just requested approval by "+Meteor.user().username+" visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
                 });
                 console.log('approval email sent to user:'+emailUser)
@@ -257,7 +271,7 @@ if (Meteor.isServer) {
                         to: to,
                         from: emailUserFrom,
                         subject: "Doichain Bounties - state update: approval requested for bounty id:"+github_id,
-                        text: "Dear "+user.username+",\nUser "+Meteor.user().username+" just requested approval for Doichain bounty "+github_id+
+                        text: "Dear "+user.username+",\n\nUser "+Meteor.user().username+" just requested approval for Doichain bounty "+github_id+
                             " visit https://www.doichain.org/en/bounties/"+github_id+" for details.\n\n Yours, Doichain.org Bounty Team",
                     });
 

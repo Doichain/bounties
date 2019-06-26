@@ -49,15 +49,22 @@ FlowRouter.route('/:_id', {
 FlowRouter.route('/', {
     name: 'Bounties.list',
     action(params, queryParams) {
-        const handle = Meteor.subscribe('bounties');
-        Tracker.autorun(() => {
+
+       const stateFilters = ['open','cancelled']
+        const orderBy = 'title'
+        const orderUpDown = -1
+        Session.setDefault('orderBy',orderBy)
+        Session.setDefault('orderUpDown',orderUpDown)
+        Session.setDefault('stateFilter',JSON.stringify(stateFilters))
+
+        Tracker.autorun(function() {
+            const handle = Meteor.subscribe('bounties',null,
+                Session.get('orderBy'),
+                Session.get('orderUpDown'),
+                Session.get('stateFilter'));
             const isReady = handle.ready();
         });
     }
-});
-
-Template.bountyMain.onRendered(function() {
-    var clipboard = new Clipboard('.btn-copy-link');
 });
 
 Template.body.events({
@@ -65,7 +72,27 @@ Template.body.events({
         Meteor.call('gitHubSync', (err, res) => {
             err?alert(err):'';
         });
-    }
+    },
+    'change .orderBy'(event) {
+        Session.set('orderBy',event.target.value);
+    },
+    'change .orderUpDown'(event) {
+        Session.set('orderUpDown',event.target.value);
+    },
+    'click .stateFilter'(event) {
+        let stateFilters = []
+        if(Session.get('stateFilter')!==null) stateFilters = JSON.parse(Session.get('stateFilter'))
+        if(event.target.checked)
+            stateFilters.push(event.target.value);
+        else{
+            const filtered = stateFilters.filter(function (el) {
+                return el != event.target.value;
+            });
+            stateFilters = filtered
+
+        }
+        Session.set('stateFilter',JSON.stringify(stateFilters))
+}
 });
 Template.bountyEur.events({
     'blur .bountyEur'(event) {
@@ -119,14 +146,16 @@ Template.blockBounty.events({
 });
 
 Template.body.helpers({
-  bounties: function () {
-
-    let filter = {};
-    if(id_filter) filter = {github_id: filter};
-    const bounties = Bounties.find({}, {sort: {priority: -1, created_at:1, updated_at:1}});
-    return bounties;
-  },
-  fields: function () {
+      bounties: function () {
+          let filter = {};
+          const sort = {}
+          const orderBy = Session.get('orderBy')
+          const orderUpDown = Session.get('orderUpDown')
+          sort[orderBy] = Number(orderUpDown)
+          if(id_filter) filter = {github_id: filter};
+        return  Bounties.find(filter,{sort:sort}).fetch();//Bounties.find(filter,{sort:sort});
+      },
+    fields: function () {
       return [
             {fieldId: 'title',key: 'title',label: 'Title', tmpl: Template.bountyMain},
 		    {fieldId: 'priority', key: 'priority', label: 'Priority',  sortOrder: 0, sortDirection: 'descending', hidden: true, tmpl: Template.priority},
@@ -138,9 +167,23 @@ Template.body.helpers({
             {fieldId: 'bountyDoi', key: 'bountyEU', label: 'bounty DOI',hidden: true, tmpl: Template.bountyDoi},
             {fieldId: 'blockBounty', key: 'blockedBy', label: 'blocked by',hidden: true, tmpl: Template.blockBounty},
     ];
-  },
+    },
+    orderBy: function(state){
+        //console.log('orderBy',state)
+        return Session.get('orderBy')===state?'selected':''
+    },
+    orderUpDown: function(direction){
+        //console.log('orderUpDown',direction)
+        return Session.get('orderUpDown')===direction?'selected':''
+    }
 });
 
+Template.bountyMain.onRendered(function() {
+    var clipboard = new Clipboard('.btn-copy-link');
+});
+
+Template.bountyMain.events({
+});
 Template.bountyMain.helpers({
     shareData: function () {
         return { title: 'Doichain bounty: '+this.title, url: 'https://www.doichain.org/bounties/'+this.github_id}
