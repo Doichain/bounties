@@ -54,7 +54,7 @@ FlowRouter.route('/', {
         Session.setDefault('stateFilter',JSON.stringify(stateFilters))
 
         Tracker.autorun(function() {
-            const handle = Meteor.subscribe('bounties',null, Session.get('stateFilter'));
+            const handle = Meteor.subscribe('bounties',null, Session.get('stateFilter'),Session.get('searchFilter'));
             const isReady = handle.ready();
         });
     }
@@ -65,6 +65,9 @@ Template.body.events({
         Meteor.call('gitHubSync', (err, res) => {
             err?alert(err):'';
         });
+    },
+    'keyup .searchFilter'(event) {
+        Session.set('searchFilter',event.target.value);
     },
     'change .orderBy'(event) {
         Session.set('orderBy',event.target.value);
@@ -142,11 +145,11 @@ Template.blockBounty.events({
 });
 
 Template.body.helpers({
-      bounties: function () {
+    bounties: function () {
           let filter = {};
           if(id_filter) filter = {github_id: filter};
         return  Bounties.find(filter).fetch();
-      },
+     },
     fields: function () {
       return [
             {fieldId: 'title',key: 'title',label: 'Title', tmpl: Template.bountyMain},

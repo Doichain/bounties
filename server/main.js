@@ -41,7 +41,7 @@ if (Meteor.isServer) {
             return Meteor.users.find({});
         }
     });
-    Meteor.publish('bounties', function bountiesPublication(filter_id,stateFilter) {
+    Meteor.publish('bounties', function bountiesPublication(filter_id,stateFilter, searchFilter) {
             if (filter_id) {
                 return Bounties.find({github_id: Number(filter_id)}, {sort: {priority: -1}});
             } else {
@@ -57,7 +57,18 @@ if (Meteor.isServer) {
                     return Bounties.find(filter, {sort: sort});
                 } else {
                     const queryAmount = {$or: [{bountyEur: {$gt: 0}}, {bountyDoi: {$gt: 0}}]};
-                    const query = {$and: [filter, queryAmount]};
+                    let query = {$and: [filter, queryAmount]}
+                    let searchQuery
+                    if(searchFilter){
+
+                        searchQuery = {$or:[
+                            { title: new RegExp(searchFilter, 'i') },
+                            { body: new RegExp(searchFilter, 'i') },
+                            { github_id: Number(searchFilter) }
+                        ]}
+                        query = {$and: [filter, queryAmount, searchQuery]};
+                    }
+
                     return Bounties.find(query)
                 }
             }
