@@ -8,6 +8,16 @@ a {
     color: #428bca;
     text-decoration: none;
 }
+#dc-table .priority { visibility: hidden; overflow: hidden;}
+#dc-table .created_at { visibility: hidden; overflow: hidden}
+#dc-table .state {    visibility: hidden; overflow: hidden}
+#dc-table .github_id {    visibility: hidden;overflow: hidden }
+#dc-table .labels {    visibility: hidden;overflow: hidden }
+#dc-table .bountyEU {    visibility: hidden; overflow: hidden}
+#dc-table .blockedBy {    visibility: hidden;overflow: hidden }
+
+
+
 .dc-container {max-width: 1212px;padding:0 21px;}
 #dc-table {width: 100%;}
 #dc-table th {display: none;}

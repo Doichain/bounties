@@ -41,14 +41,10 @@ if (Meteor.isServer) {
             return Meteor.users.find({});
         }
     });
-    Meteor.publish('bounties', function bountiesPublication(filter_id, orderBy, orderUpDown,stateFilter) {
+    Meteor.publish('bounties', function bountiesPublication(filter_id,stateFilter) {
             if (filter_id) {
                 return Bounties.find({github_id: Number(filter_id)}, {sort: {priority: -1}});
             } else {
-                if (orderUpDown === undefined || orderUpDown === null) orderUpDown = -1
-                if (orderBy === undefined || orderBy === null) orderBy = 'title'
-                const sort = {}
-                sort[orderBy] = Number(orderUpDown)
                 let filter = {}
 
                 const statesArray = []
@@ -62,8 +58,7 @@ if (Meteor.isServer) {
                 } else {
                     const queryAmount = {$or: [{bountyEur: {$gt: 0}}, {bountyDoi: {$gt: 0}}]};
                     const query = {$and: [filter, queryAmount]};
-                    const bounties = Bounties.find(query, {sort: sort});
-                    return bounties
+                    return Bounties.find(query)
                 }
             }
         }
@@ -136,11 +131,8 @@ if (Meteor.isServer) {
                 //TODO send email to admin who blocked the issue
         },
         'cancelBounty'({github_id}){
-            console.log('cancel bounty',github_id);
             const bounty = Bounties.findOne({github_id:github_id}); //find the bounty we are working on
             const lastUser = bounty.blockedBy[bounty.blockedBy.length-1].userId;
-            //user must be authenticated, last block must belong to user (or admin), status must be "blocked"
-
             if(Meteor.userId() && (Meteor.userId()==lastUser || Roles.userIsInRole( Meteor.user(), ['admin']))){
                 const blockedBy = {userId:Meteor.userId(),state:"cancelled",email:Meteor.user().emails[0].address}
                 Bounties.update({github_id:github_id}, {$addToSet:{blockedBy:blockedBy},$set:{state:'cancelled'}});

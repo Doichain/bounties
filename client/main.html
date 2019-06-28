@@ -35,8 +35,8 @@
 				<div class="form-group">
     				<label for="orderUpDown" class="ml-sm-4">ASC / DESC:</label>
    					<select class="orderUpDown" name="orderUpDown" id="orderUpDown">
+                        <option {{orderUpDown 'ascending'}} value="1">Ascending</option>
   						<option {{orderUpDown 'descending'}} value="-1">Descending</option>
-  						<option {{orderUpDown 'ascending'}} value="1">Ascending</option>
 					</select>
 				</div>
                 <div class="form-group">

@@ -51,17 +51,10 @@ FlowRouter.route('/', {
     action(params, queryParams) {
 
        const stateFilters = ['open','cancelled']
-        const orderBy = 'title'
-        const orderUpDown = -1
-        Session.setDefault('orderBy',orderBy)
-        Session.setDefault('orderUpDown',orderUpDown)
         Session.setDefault('stateFilter',JSON.stringify(stateFilters))
 
         Tracker.autorun(function() {
-            const handle = Meteor.subscribe('bounties',null,
-                Session.get('orderBy'),
-                Session.get('orderUpDown'),
-                Session.get('stateFilter'));
+            const handle = Meteor.subscribe('bounties',null, Session.get('stateFilter'));
             const isReady = handle.ready();
         });
     }
@@ -75,9 +68,12 @@ Template.body.events({
     },
     'change .orderBy'(event) {
         Session.set('orderBy',event.target.value);
+        $('th[fieldid="'+event.target.value+'"]').click()
     },
     'change .orderUpDown'(event) {
-        Session.set('orderUpDown',event.target.value);
+        const currentSort = Session.get('orderBy')
+        if(currentSort===null || currentSort==undefined) Session.set('orderBy','title');
+        $('th[fieldid="'+Session.get('orderBy')+'"]').click()
     },
     'click .stateFilter'(event) {
         let stateFilters = []
@@ -148,24 +144,21 @@ Template.blockBounty.events({
 Template.body.helpers({
       bounties: function () {
           let filter = {};
-          const sort = {}
-          const orderBy = Session.get('orderBy')
-          const orderUpDown = Session.get('orderUpDown')
-          sort[orderBy] = Number(orderUpDown)
           if(id_filter) filter = {github_id: filter};
-        return  Bounties.find(filter,{sort:sort}).fetch();//Bounties.find(filter,{sort:sort});
+        return  Bounties.find(filter).fetch();
       },
     fields: function () {
       return [
             {fieldId: 'title',key: 'title',label: 'Title', tmpl: Template.bountyMain},
-		    {fieldId: 'priority', key: 'priority', label: 'Priority',  sortOrder: 0, sortDirection: 'descending', hidden: true, tmpl: Template.priority},
-		  	{fieldId: 'created_at',key: 'created_at',label: 'created', sortOrder: 1, sortDirection: 'ascending', hidden: true, fn: function (value) { return  moment(value).fromNow();}},
-		    {fieldId: 'updated_at',key: 'updated_at',label: 'updated',hidden: true,fn: function (value) { return  moment(value).fromNow();}},
-            {fieldId: 'state',key: 'state',label: 'State',hidden: true,},
-            {fieldId: 'labelsId',key: 'labels',label: 'Labels',hidden: true, tmpl: Template.labels},
+		    {fieldId: 'priority', key: 'priority', label: 'Priority',  sortOrder: 0, sortDirection: 'descending', hidden: false, tmpl: Template.priority},
+		  	{fieldId: 'created_at',key: 'created_at',label: 'created', sortOrder: 1, sortDirection: 'ascending', hidden: false, fn: function (value) { return  moment(value).fromNow();}},
+		    {fieldId: 'updated_at',key: 'updated_at',label: 'updated',  sortOrder: 1, sortDirection: 'ascending', hidden: true,fn: function (value) { return  moment(value).fromNow();}},
+            {fieldId: 'state',key: 'state',label: 'State',hidden: false},
+            {fieldId: 'github_id',key: 'github_id',label: 'GitHub Id',hidden: false},
+            {fieldId: 'labelsId',key: 'labels',label: 'Labels',hidden: false, tmpl: Template.labels},
             {fieldId: 'bountyEur', key: 'bountyEU', label: 'bounty €',hidden: true, tmpl: Template.bountyEur},
-            {fieldId: 'bountyDoi', key: 'bountyEU', label: 'bounty DOI',hidden: true, tmpl: Template.bountyDoi},
-            {fieldId: 'blockBounty', key: 'blockedBy', label: 'blocked by',hidden: true, tmpl: Template.blockBounty},
+            {fieldId: 'bountyDoi', key: 'bountyEU', label: 'bounty DOI',hidden: false, tmpl: Template.bountyDoi},
+            {fieldId: 'blockBounty', key: 'blockedBy', label: 'blocked by',hidden: false, tmpl: Template.blockBounty},
     ];
     },
     orderBy: function(state){
