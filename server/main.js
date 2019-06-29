@@ -54,7 +54,7 @@ if (Meteor.isServer) {
                 if (statesArray.length > 0) filter = {$or: statesArray}
 
                 if (Roles.userIsInRole(Meteor.user(), ['admin'])) {
-                    return Bounties.find(filter, {sort: sort});
+                    return Bounties.find(filter);
                 } else {
                     const queryAmount = {$or: [{bountyEur: {$gt: 0}}, {bountyDoi: {$gt: 0}}]};
                     let query = {$and: [filter, queryAmount]}
