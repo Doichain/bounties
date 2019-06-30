@@ -1,7 +1,7 @@
-body {
+html, body {
 	font-family: 'Barlow';
 	font-size: 16px;
-	line-height: 32px;
+	line-height: 2em;
 	padding: 0px;
 }
 a {
@@ -70,13 +70,29 @@ a {
 .accordion a {color: #ffff; text-decoration: underline;}
 .accordion a:hover {color: #0390cb; text-decoration: underline;}
 .dc-filter {
-	background-color: #f0f0f0;
+	background-color: #e4e4e4;
 	border-radius: 5px;
-	padding: 20px 5px;
 	margin: 0 0 20px;
+	padding: 0px;
 }
 .dc-filter label {display: inline-block;}
-.dc-filter select {margin-top: -2px;}
+.dc-filter select, #dc-state-filter-bgn {margin-top: -2px;}
+.dc-main-filter {
+	background-color: #f0f0f0;
+	padding: 20px 5px;
+	border-radius: 6px;
+}
+.dc-state-filter-wrapper {line-height: 0px; padding: 10px 0px 18px;}
+.dc-state-filter-wrapper div {display: inline-block;}
+.dc-state-filter-wrapper .custom-switch {padding-left: 2rem !important;}
+.custom-control label, .custom-control input {cursor: pointer;}
+.custom-control-input:checked~.custom-control-label::before {
+    border-color: #08ccc3;
+    background-color: #08ccc3;
+}
+.custom-control-label {line-height: 1.4em;}
+.input-group-addon {background-color: #ffffff;}
+.input-group-addon i {color:#0390cb;}
 .reactive-table-navigation span,
 .reactive-table-navigation input{margin-right: 7px;}
 .reactive-table-navigation span:last-child {margin: 0;}
@@ -165,8 +181,7 @@ a {
 }
 .dc-bounty-description a {word-break: break-all;}
 .dc-details-wrapper {
-	padding: 0px 20px 20px;
-	/*background-color: #F0F0F0;*/
+	padding: 0px 20px 15px;
 	border-top: 1px solid #e4eef3;
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
@@ -174,7 +189,8 @@ a {
 }
 .dc-detail-item {
 	display: inline-block;
-	margin: 15px 25px 0 0;
+	margin: 11px 25px 0 0;
+	line-height: 1.5em;
 	cursor: context-menu;
 }
 .dc-detail-item:last-child {
@@ -335,7 +351,7 @@ a.dc-tooltip-left span:hover {
 	letter-spacing: 1px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 	#login-buttons {
 		text-align: left;
 		margin-top: 18px;
@@ -364,9 +380,7 @@ a.dc-tooltip-left span:hover {
 		display: none;
 	}
 	.dc-details-wrapper {
-		/*background-color: #F0F0F0;*/
 		border: none;
-		line-height: 1.6em;
 	}
 	.dc-card-body {
 		padding: 30px 20px 0px;
@@ -387,20 +401,19 @@ a.dc-tooltip-left span:hover {
 		box-sizing: inherit;
 		margin-left: 0px;
 	}
-	.dc-filter .form-inline .form-group {
-		margin-bottom: 15px !important;
-	}
 	.dc-bounty-input {
 		float: none;
 		text-align: left;
 	}
+	.dc-main-filter .form-inline .form-group {
+		margin-bottom: 15px !important;
+	}
 }
 @media (max-width: 576px){
-	.dc-filter .form-inline .form-group {
-		box-sizing: border-box;
-		width: 50%
-	}
-	.dc-filter .form-inline .form-group:first-child {
-		padding-right: 15px;
+	.orderByLabel {display: block !important;}
+	.dc-filter select {
+		margin-top: 0px;
+		display: inline-block;
+		width: auto;
 	}
 }

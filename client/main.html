@@ -11,73 +11,125 @@
 </head>
 
 <body onLoad="resizeParent();">
-<div class="container-fluid dc-container">
-	<!-- Login -->
-	{{> AccountNav}}
-	<!-- Login END -->
-	
-	<!-- Filter -->
-	<div class="row dc-filter">
-  		<div class="col-md-8">
-  			<div class="form-inline">
-  				<div class="form-group">
-    				<label for="orderBy">Order by:</label>
-   					<select class="orderBy" name="orderBy" id="orderBy">
-  						<option {{orderBy 'state'}} value="state">State</option>
-  						<option {{orderBy 'title'}} value="title">Title</option>
-                        <option {{orderBy 'github_id'}} value="github_id">Github Id</option>
-  						<option {{orderBy 'created_at'}} value="created_at">Created</option>
-  						<option {{orderBy 'updated_at'}} value="updated_at">Updated</option>
-                        <option {{orderBy 'bountyDoi'}} value="bountyDoi">Bounty DOI</option>
-                        <option {{orderBy 'priority'}} value="priority">Priority</option>
-					</select>
+	<div class="container-fluid dc-container">
+		<!-- Login -->
+		{{> AccountNav}}
+		<!-- Login END -->
+
+		<!-- Filter -->
+		<div class="dc-filter" id="dc-filter">
+			<div class="row m-0 dc-main-filter">
+				<div class="col-md-8">
+					<div class="form-inline">
+						<div class="form-group">
+							<label for="orderBy" class="mr-2 orderByLabel">Order by:</label>
+							<select class="orderBy form-control mr-2" name="orderBy" id="orderBy">
+								<option {{orderBy 'state'}} value="state">State</option>
+								<option {{orderBy 'title'}} value="title">Title</option>
+								<option {{orderBy 'github_id'}} value="github_id">Github Id</option>
+								<option {{orderBy 'created_at'}} value="created_at">Created</option>
+								<option {{orderBy 'updated_at'}} value="updated_at">Updated</option>
+								<option {{orderBy 'bountyDoi'}} value="bountyDoi">Bounty DOI</option>
+								<option {{orderBy 'priority'}} value="priority">Priority</option>
+							</select>
+							<!--<label for="orderUpDown" class="ml-sm-4 mr-2">ASC / DESC:</label>-->
+							<select class="orderUpDown form-control" name="orderUpDown" id="orderUpDown">
+								<option {{orderUpDown 'ascending'}} value="1">Ascending</option>
+								<option {{orderUpDown 'descending'}} value="-1">Descending</option>
+							</select>
+							<a class="btn btn-success ml-4" id="dc-state-filter-bgn" data-toggle="collapse" href="#dc-state-filter" role="button" aria-expanded="false" aria-controls="dc-state-filter"><span>Select state</span> <i class="fas fa-angle-down ml-1" id="state-filter-toggle-icon"></i></a>
+						</div>
+					</div>
 				</div>
-				<div class="form-group">
-    				<label for="orderUpDown" class="ml-sm-4">ASC / DESC:</label>
-   					<select class="orderUpDown" name="orderUpDown" id="orderUpDown">
-                        <option {{orderUpDown 'ascending'}} value="1">Ascending</option>
-  						<option {{orderUpDown 'descending'}} value="-1">Descending</option>
-					</select>
+				<div class="col-md-4">
+					<div id="reactive-table-1-filter-DC" class="input-group"> <span class="input-group-addon"> <i class="fas fa-search"></i> </span>
+						<input class="reactive-table-input form-control searchFilter" type="text" name="searchFilter" id="searchFilter" placeholder="Search...">
+					</div>
 				</div>
-                <div class="form-group">
-                    <label for="stateFilter" class="ml-sm-4">open</label>
-                    <input type="checkbox" class="stateFilter" name="open" value="open" checked>
-                    <label for="stateFilter" class="ml-sm-4">cancelled</label>
-                    <input type="checkbox" class="stateFilter" name="cancelled" value="cancelled" checked> <br/>
-                    <label for="stateFilter" class="ml-sm-4">approved</label>
-                    <input type="checkbox" class="stateFilter" name="approved" value="approved">
-                    <label for="stateFilter" class="ml-sm-4">under review</label>
-                    <input type="checkbox" class="stateFilter" name="under review" value="under review"> <br/>
-                    <label for="stateFilter" class="ml-sm-4">blocked</label>
-                    <input type="checkbox" class="stateFilter" name="blocked" value="blocked">
-                </div>
 			</div>
-  		</div>
-		<div class="col-md-4">
-			<div id="reactive-table-1-filter-DC" class="input-group"> <span class="input-group-addon"> <i class="fa fa-filter"></i> </span>
-				<input class="reactive-table-input form-control searchFilter" type="text" name="searchFilter" id="searchFilter" placeholder="Search...">
+			<div class="collapse" id="dc-state-filter">
+				<div class="row m-0">
+					<div class="col-md-12">
+						<div class="dc-state-filter-wrapper">
+							<div class="custom-control custom-switch mr-4 mt-2">
+								<input type="checkbox" class="stateFilter custom-control-input" name="open" value="open" id="stateOpen" checked>
+								<label for="stateOpen" class="custom-control-label ml-2">open</label>
+							</div>
+							<div class="custom-control custom-switch mr-4 mt-2">
+								<input type="checkbox" class="stateFilter custom-control-input" name="cancelled" value="cancelled" id="stateCancelled" checked>
+								<label for="stateCancelled" class="custom-control-label ml-2">cancelled</label>
+							</div>
+							<div class="custom-control custom-switch mr-4 mt-2">
+								<input type="checkbox" class="stateFilter custom-control-input" name="approved" value="approved" id="stateApproved">
+								<label for="stateApproved" class="custom-control-label ml-2">approved</label>
+							</div>
+							<div class="custom-control custom-switch mr-4 mt-2">
+								<input type="checkbox" class="stateFilter custom-control-input" name="under review" value="under review" id="stateReview">
+								<label for="stateReview" class="custom-control-label ml-2">under review</label>
+							</div>
+							<div class="custom-control custom-switch mt-2">
+								<input type="checkbox" class="stateFilter custom-control-input" name="blocked" value="blocked" id="stateBlocked">
+								<label for="stateBlocked" class="custom-control-label ml-2">blocked</label>
+							</div>
+						</div>
+					</div>	
+				</div>
 			</div>
 		</div>
+		<!-- Filter END -->
+		<div class="row">
+			<div class="col-md-12">
+				{{> reactiveTable collection=bounties fields=fields rowsPerPage=15 id="dc-table" class=" " showRowCount=true showFilter=false}}
+			</div>
+		</div>	
 	</div>
-	<!-- Filter END -->
-	 
-	<div class="row">
-		<div class="col-md-12">
-			{{> reactiveTable collection=bounties fields=fields rowsPerPage=15 id="dc-table" class=" " showRowCount=true showFilter=false}}
-		</div>
-	</div>	
-</div>
 
+	<style type="text/css"  id="dc-shadowdom">
+		.cg-container {border: 0px !important;}
+		.cg-widget {margin: 10px 0 30px 0 !important;}
+		.cg-box-name {background: rgb(243, 243, 243) !important;}
+		.cg-medium {color: rgba(12, 93, 160, 1) !important; border-top-right-radius: 5px; border-bottom-right-radius: 5px;}
+		.cg-box-name {border-top-left-radius: 5px; border-bottom-left-radius: 5px;}
+		.cg-select-items {background-color: rgba(12, 93, 160, 1) !important;}
+		.cg-select-item {background: rgba(243, 243, 243, 0.2)!important;}
+		.cg-select-item-selected {background: rgba(12, 93, 160, 1)!important;}
+		.cg-select-item:hover {background: rgba(37, 155, 255, 1)!important;}
+		.cg-select-selected:after {border-top-color: rgba(12, 93, 160, 1) !important;}
+		.cg-select-selected.cg-select-arrow-active:after {border-color: transparent !important; border-bottom-color: rgba(12, 93, 160, 1) !important;}
+		.cg-footer {display: none !important;}
+		.cg-center-panel svg {fill: #08ccc3 !important;}
+		@media (min-width: 887px){
+			.cg-widget.cg-no-flip.small {flex-direction: row !important;}
+		}
+	</style>
 
-<script>
-	$(document).ready(function() {
-		// add a target blank attribute to all links in bounty description 
-		$( "body" ).click(function() {
-			$(".dc-bounty-description a").attr("target","_blank");
-		});		
-	});
-</script>
-
+	<script type="text/javascript">
+		$(document).ready(function() {
+			// add a target blank attribute to all links in bounty description 
+			$( "body" ).click(function() {
+				$(".dc-bounty-description a").attr("target","_blank");
+			});		
+		});
+		// Style the shadow DOM
+		$(function() {
+			$(window).bind('load', function() {
+				const rootelement = document.querySelector('coingecko-coin-converter-widget');
+				const shadowstyle = document.querySelector('#dc-shadowdom');
+				rootelement.shadowRoot.append(shadowstyle);
+			});
+		});
+		
+		// Toogle Icon on select state filter button
+		$( "#dc-state-filter-bgn" ).click(function() {
+			if ( $("#dc-state-filter").hasClass("show") ) {
+				$("#state-filter-toggle-icon").removeClass("fa-angle-up");
+				$("#state-filter-toggle-icon").addClass("fa-angle-down");
+			} else {
+				$("#state-filter-toggle-icon").removeClass("fa-angle-down");
+				$("#state-filter-toggle-icon").addClass("fa-angle-up");
+			}	
+		});
+	</script>
 </body>
 
 <template name="bountyMain">
@@ -243,7 +295,7 @@
 			<div class="col-md-6 dc-login-info">
 				{{#if currentUser }}
 					{{#if isInRole 'admin'}}
-						<button type="button" class="gitHubSync btn btn-primary btn-sm btn-success dc-action-btn">Sync with Github</button>
+						<button type="button" class="gitHubSync btn btn-primary btn-sm btn-success dc-action-btn"><i class="fas fa-sync mr-1"></i> Sync with Github</button>
 					{{else}}
 						Hello {{currentUser.username}}!
 					{{/if}}
@@ -254,11 +306,15 @@
 			<div class="col-md-6 text-right">
 				<div id="login-buttons">
 					{{#if $not currentUser}}
+						<a class="btn btn-success" id="coinconverter-bgn" data-toggle="collapse" href="#dc-coinconverter" role="button" aria-expanded="false" aria-controls="dc-coinconverter"><i class="fas fa-exchange-alt mr-1"></i> Coin Converter</a>
 						<a class="btn btn-success" id="sign-in-btn" data-toggle="collapse" href="#dc-signIn" role="button" aria-expanded="false" aria-controls="dc-signIn"><i class="fas fa-sign-in-alt mr-1"></i> Sign in</a>
 						<a class="btn btn-success" id="register-btn" data-toggle="collapse" href="#dc-signUp" role="button" aria-expanded="false" aria-controls="dc-signUp"><i class="far fa-edit mr-1"></i> Register</a>
 					{{else}}
 						{{#if isInRole 'admin'}}
 							<a class="btn btn-success" id="users-btn" data-toggle="collapse" href="#dc-users" role="button" aria-expanded="false" aria-controls="dc-users"><i class="fas fa-users mr-1"></i> Users</a>
+						
+						{{else}}
+							<a class="btn btn-success" id="coinconverter-bgn" data-toggle="collapse" href="#dc-coinconverter" role="button" aria-expanded="false" aria-controls="dc-coinconverter"><i class="fas fa-exchange-alt mr-1"></i> Coin Converter</a>
 						{{/if}}
 						<a class="btn btn-success" id="settings-btn" data-toggle="collapse" href="#dc-settings" role="button" aria-expanded="false" aria-controls="dc-settings"><i class="fas fa-cog mr-1"></i> Settings</a>
 						<a class="btn btn-success" id="logout-btn"><i class="fas fa-sign-out-alt mr-1"></i> Logout</a>
@@ -349,6 +405,20 @@
 					</div>
 				</div>
 			{{/if}}
+			<div id="dc-coinconverter" class="collapse" data-parent="#formToggle">
+				<div class="row m-0 at-form">
+					<div class="col-md-12">
+						<h3>Coin Converter</h3>
+						<hr>
+					</div>
+				</div>
+				<div class="row m-0">
+					<div class="col-md-12">
+						<script src="https://widgets.coingecko.com/coingecko-coin-converter-widget.js"></script>
+						<coingecko-coin-converter-widget class="cg-dc-style" coin-id="doichain" currency="eur" background-color="transparent" font-color="#ffffff" locale="de"></coingecko-coin-converter-widget>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
