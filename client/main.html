@@ -32,12 +32,11 @@
 								<option {{orderBy 'bountyDoi'}} value="bountyDoi">Bounty DOI</option>
 								<option {{orderBy 'priority'}} value="priority">Priority</option>
 							</select>
-							<!--<label for="orderUpDown" class="ml-sm-4 mr-2">ASC / DESC:</label>-->
 							<select class="orderUpDown form-control" name="orderUpDown" id="orderUpDown">
 								<option {{orderUpDown 'ascending'}} value="1">Ascending</option>
 								<option {{orderUpDown 'descending'}} value="-1">Descending</option>
 							</select>
-							<a class="btn btn-success ml-4" id="dc-state-filter-bgn" data-toggle="collapse" href="#dc-state-filter" role="button" aria-expanded="false" aria-controls="dc-state-filter"><span>Select state</span> <i class="fas fa-angle-down ml-1" id="state-filter-toggle-icon"></i></a>
+							<a class="btn btn-success ml-4" id="dc-state-filter-btn" data-toggle="collapse" href="#dc-state-filter" role="button" aria-expanded="false" aria-controls="dc-state-filter"><span>Select state</span> <i class="fas fa-angle-down ml-1" id="state-filter-toggle-icon"></i></a>
 						</div>
 					</div>
 				</div>
@@ -45,6 +44,7 @@
 					<div id="reactive-table-1-filter-DC" class="input-group"> <span class="input-group-addon"> <i class="fas fa-search"></i> </span>
 						<input class="reactive-table-input form-control searchFilter" type="text" name="searchFilter" id="searchFilter" placeholder="Search...">
 					</div>
+					<a class="btn btn-success" id="dc-state-filter-mobile-btn" data-toggle="collapse" href="#dc-state-filter" role="button" aria-expanded="false" aria-controls="dc-state-filter"><span>Select state</span> <i class="fas fa-angle-down ml-1" id="state-filter-toggle-icon"></i></a>
 				</div>
 			</div>
 			<div class="collapse" id="dc-state-filter">
@@ -85,7 +85,7 @@
 	</div>
 
 	<style type="text/css"  id="dc-shadowdom">
-		.cg-container {border: 0px !important;}
+		.cg-container {border: 0px !important; min-width: 10px !important;}
 		.cg-widget {margin: 10px 0 30px 0 !important;}
 		.cg-box-name {background: rgb(243, 243, 243) !important;}
 		.cg-medium {color: rgba(12, 93, 160, 1) !important; border-top-right-radius: 5px; border-bottom-right-radius: 5px;}
@@ -100,6 +100,11 @@
 		.cg-center-panel svg {fill: #08ccc3 !important;}
 		@media (min-width: 887px){
 			.cg-widget.cg-no-flip.small {flex-direction: row !important;}
+		}
+		@media (max-width: 490px){
+			.cg-box-input, .cg-box-container {width: 100% !important;}
+			.cg-py-5 {padding-top: 0px !important;}
+			.cg-widget {margin: 0px !important;}
 		}
 	</style>
 
@@ -177,10 +182,10 @@
 			<!-- logged in Action Buttons -->
 			<div class="dc-action-btn-wrapper">
 				<div class="row align-items-center">
-					<div class="col-7">
+					<div class="col-sm-7">
 						{{> blockBounty }}
 					</div>
-					<div class="col-5">
+					<div class="col-sm-5">
 						<div class="dc-detail-share">
 							<a href="{{html_url}}" target='_blank' class="dc-tooltip-left"><i class="fab fa-github"></i><span>Open GitHub Issue</span></a>
 							<a href="#" class="dc-tooltip-left btn-copy-link" data-clipboard-text="https://www.doichain.org/en/bounties/{{github_id}}"><i class="fas fa-copy"></i><span>Copy Bounty URL into clipboard</span></a>
@@ -252,38 +257,46 @@
 		{{#unless isInRole 'admin'}}
 			{{#if blockedBy}}
 				{{#if isState 'cancelled'}}
-					<button type="button" class="blockBounty btn btn-primary btn-sm btn-success dc-action-btn">Block bounty now</button>
+					<button type="button" class="blockBounty btn btn-primary btn-sm btn-success dc-action-btn"><i class="fas fa-lock mr-1"></i> Block bounty now</button>
+					<hr class="bounty-share-hr">
 				{{/if}}
 				{{#if isState 'blocked'}}
 					{{#if isMine}}
-						<button type="button" class="requestApproval btn btn-primary btn-sm btn-success dc-action-btn">Request Approval</button>
-						<button type="button" class="cancelBounty btn btn-primary btn-sm btn-danger dc-action-btn">Cancel</button>
+						<button type="button" class="requestApproval btn btn-primary btn-sm btn-success dc-action-btn"><i class="fas fa-check mr-1"></i>Request Approval</button>
+						<button type="button" class="cancelBounty btn btn-primary btn-sm btn-danger dc-action-btn"><i class="fas fa-unlock mr-1"></i>Cancel</button>
+						<hr class="bounty-share-hr">
 					{{/if}}
 				{{/if}}
 				{{#if isState 'under review'}}
 					{{#if isMine}}
-						<button type="button" class="cancelBounty btn btn-primary btn-sm btn-danger dc-action-btn">Cancel</button>
+						<button type="button" class="cancelBounty btn btn-primary btn-sm btn-danger dc-action-btn"><i class="fas fa-unlock mr-1"></i>Cancel</button>
+						<hr class="bounty-share-hr">
 					{{/if}}
 				{{/if}}
-			{{else}}
-				<button type="button" class="blockBounty btn btn-primary btn-sm btn-success dc-action-btn">Block bounty now</button>
+				{{else}}
+					<button type="button" class="blockBounty btn btn-primary btn-sm btn-success dc-action-btn"><i class="fas fa-lock mr-1"></i> Block bounty now</button>
+					<hr class="bounty-share-hr">
 			{{/if}}
 		{{/unless}}
 
 		{{#if isInRole 'admin'}}
 			{{#if blockedBy}}
 				{{#if isState 'cancelled'}}
-					<button type="button" class="blockBounty btn btn-primary btn-sm btn-success dc-action-btn">Block bounty now</button>
+					<button type="button" class="blockBounty btn btn-primary btn-sm btn-success dc-action-btn"><i class="fas fa-lock mr-1"></i> Block bounty now</button>
+					<hr class="bounty-share-hr">
 				{{/if}}
 				{{#if isState 'blocked'}}
-					<button type="button" class="cancelBounty btn btn-primary btn-sm btn-danger dc-action-btn">Cancel</button>
+					<button type="button" class="cancelBounty btn btn-primary btn-sm btn-danger dc-action-btn"><i class="fas fa-unlock mr-1"></i> Cancel</button>
+					<hr class="bounty-share-hr">
 				{{/if}}
 				{{#if isState 'under review'}}
-					<button type="button" class="approveBounty btn btn-primary btn-sm btn-success dc-action-btn">Approve</button>
-					<button type="button" class="cancelBounty btn btn-primary btn-sm btn-danger dc-action-btn">Cancel</button>
+					<button type="button" class="approveBounty btn btn-primary btn-sm btn-success dc-action-btn"><i class="fas fa-check-double mr-1"></i> Approve</button>
+					<button type="button" class="cancelBounty btn btn-primary btn-sm btn-danger dc-action-btn"><i class="fas fa-unlock mr-1"></i>Cancel</button>
+					<hr class="bounty-share-hr">
 				{{/if}}
 			{{else}}
-				<button type="button" class="blockBounty btn btn-primary btn-sm btn-success dc-action-btn">Block bounty now</button>
+				<button type="button" class="blockBounty btn btn-primary btn-sm btn-success dc-action-btn"><i class="fas fa-lock mr-1"></i> Block bounty now</button>
+				<hr class="bounty-share-hr">
 			{{/if}}
 		{{/if}}
 	{{/if}}	
