@@ -11,7 +11,7 @@
     "@babel/runtime": "^7.1.5",
     "@octokit/rest": "^16.25.0",
     "bcrypt": "^3.0.4",
-    "lodash": "^4.17.11",
+    "lodash": ">=4.17.13",
     "meteor-node-stubs": "^0.4.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
