@@ -383,44 +383,37 @@
 			{{#if isInRole 'admin'}}
 				<div id="dc-users" class="collapse" data-parent="#formToggle">
 					<div class="row m-0">
-						<div class="col-md-12 table-responsive">
+						<div class="col-md-12">
 							<h3>Manage users</h3>
 							<hr>
-							<table class="table table-hover text-white">
-								<thead>
-									<tr>
-										<th scope="col">Username</th>
-										<th scope="col">Email</th>
-										<th scope="col">Profession</th>
-										<th scope="col">Role</th>
-										<th scope="col">Created at</th>
-										<th scope="col">Action</th>
-									</tr>
-								</thead>
-							  	<tbody>
-							  		{{#each users}}
-										<tr>
-											<td class="align-middle">{{username}}</td>
-											<td class="align-middle">{{userEmail}}</td>
-											<td class="align-middle">{{profile.profession}}</td>
-											<td class="align-middle">{{roles}}</td>
-											<td class="align-middle">{{created}}</td>
-											<td class="align-middle">
+							{{#each users}}
+								<div class="dc-user-card">
+									<div class="row align-items-center">
+										<div class="col-md-9">
+											<div class="username">{{username}}</div>
+											<div class="user-info">
+												<span><i class="fas fa-envelope fa-fw mr-1"></i> <a href="mailto:{{userEmail}}"> {{userEmail}}</a></span>
+												<span><i class="fas fa-briefcase fa-fw mr-1"></i> {{profile.profession}}</span>
+												<span><i class="fas fa-user-tag fa-fw mr-1"></i> {{roles}}</span>
+												<span><i class="fas fa-calendar-plus fa-fw mr-1"></i> {{created}}</span>
+											</div>
 
-                                                {{#if isNotAdminUserUser _id}}
-                                                    <a class="btn btn-success btn-sm text-white delete-user">Delete</a>
-                                                {{/if}}
+										</div>
+										<div class="col-md-3">
+											<div class="admin-user-action-btns text-right">
+												{{#if isNotAdminUserUser _id}}
+													<a class="btn btn-success btn-sm text-white delete-user">Delete</a>
+												{{/if}}
 												{{#if isAdmin}}
 													<a class="btn btn-danger btn-sm text-white toggle-admin">Remove Admin</a>
 												{{else}}
 													<a class="btn btn-success btn-sm text-white toggle-admin">Make Admin</a>
 												{{/if}}
-
-											</td>
-										</tr>
-									{{/each}}
-								</tbody>
-							</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							{{/each}}
 						</div>
 					</div>
 				</div>
