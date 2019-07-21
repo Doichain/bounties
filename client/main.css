@@ -85,7 +85,7 @@ a {
 }
 .dc-state-filter-wrapper {line-height: 0px; padding: 10px 0px 18px;}
 .dc-state-filter-wrapper div {display: inline-block;}
-.dc-state-filter-wrapper .custom-switch {padding-left: 2rem !important;}
+.dc-state-filter-wrapper .custom-switch {padding-left: 2rem !important; width: auto;}
 .custom-control label, .custom-control input {cursor: pointer;}
 .custom-control-input:checked~.custom-control-label::before {
     border-color: #08ccc3;
@@ -349,6 +349,28 @@ button#at-btn {width: 100%;}
 	outline: none !important;
 	border-color: #449d44 !important;
 }
+.dc-user-card {
+    padding: 20px;
+    width: 100%;
+    background-color: #fff;
+    margin-bottom: 15px;
+    color: #000;
+    border-radius: 5px;
+}
+div.username {
+	display: block;
+	line-height: 1.2em;
+    font-weight: 600;
+    font-size: 1.5em;
+    color: #0390cb;
+    font-family: 'Barlow';
+	margin-bottom: 10px;
+}
+.user-info span {margin-right: 25px; white-space: nowrap;}
+.user-info span:last-child {margin-right: 0px;}
+.user-info i {color: #08ccc3;}
+.user-info a {color: #428bca;}
+
 
 /* Badges */
 .badge {
@@ -419,6 +441,11 @@ button#at-btn {width: 100%;}
 	.dc-main-filter .form-inline .form-group {
 		margin-bottom: 15px !important;
 	}
+	.admin-user-action-btns {
+	    margin-top: 10px;
+    	padding-top: 10px;
+    	border-top: 1px dotted #000;
+	}
 }
 @media (max-width: 576px){
 	.orderByLabel {display: block !important;}
@@ -444,6 +471,7 @@ button#at-btn {width: 100%;}
 		border-top: 1px dotted #fff;
     	margin: 0 0 15px 0;
 	}
+	.user-info span {display: block;}
 }
 @media (max-width: 490px){
 	#login-buttons {
@@ -489,5 +517,10 @@ button#at-btn {width: 100%;}
 	}
 	.dc-filter .orderBy {
 		margin-bottom: 15px !important;
+	}
+}
+@media (max-width: 460px){
+	.dc-state-filter-wrapper .custom-switch {
+		width: 100%;
 	}
 }
